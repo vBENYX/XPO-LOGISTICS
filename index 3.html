@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpo Logistics - Registro de Plataformas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+/* Logo más pequeño y limpio */
+.code-logo-modern {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111827;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+/* Header animado con fondo degradado más elegante */
+.header {
+    background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+    animation: headerFade 1s ease-out;
+    box-shadow: none;
+}
+
+@keyframes headerFade {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tipografía simulada XPO Logistics */
+.logo-modern {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #111827;
+}
+.logo-modern .xpo {
+    color: #ef4444;
+}
+
+/* Botones refinados */
+.btn-modern {
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease-in-out;
+}
+
+.btn-cargada {
+    background-color: #f87171;
+}
+.btn-cargada:hover {
+    background-color: #ef4444;
+}
+
+.btn-vacia {
+    background-color: #34d399;
+}
+.btn-vacia:hover {
+    background-color: #10b981;
+}
+
+.btn-averiada {
+    background-color: #fbbf24;
+}
+.btn-averiada:hover {
+    background-color: #f59e0b;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+.btn-secondary:hover {
+    background-color: #d1d5db;
+}
+
+.btn-pdf {
+    background-color: #c084fc;
+}
+.btn-pdf:hover {
+    background-color: #a855f7;
+}
+
+.btn-whatsapp {
+    background-color: #22c55e;
+}
+.btn-whatsapp:hover {
+    background-color: #16a34a;
+}
+
+.btn-danger {
+    background-color: #f87171;
+}
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+/* Modernización visual estilo Apple + microinteracciones */
+.logo-modern .xpo {
+    color: #ef4444;
+    font-weight: 700;
+}
+.btn, .input, .textarea {
+    transition: all 0.3s ease-in-out;
+}
+.btn-modern {
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    background-color: #fff;
+    color: #111827;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.btn-modern:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-2px);
+}
+.main section {
+    margin-bottom: 40px;
+}
+.estado-buttons .btn {
+    flex: 1;
+    padding: 14px 12px;
+    font-size: 0.95rem;
+}
+
+/* Animaciones suaves estilo Apple */
+@keyframes fadeSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeSlideIn 0.6s ease-out both;
+    will-change: opacity, transform;
+}
+
+.section-transition {
+    transition: all 0.3s ease-in-out;
+}
+
+input, textarea, .btn {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+input:focus, textarea:focus {
+    transform: scale(1.02);
+}
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6; }
+        .app { min-height: 100vh; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 40px; padding: 30px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 16px; color: white; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2); }
+        .code-logo-modern {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+        text-shadow: none;
+    } font-size: 2.8rem; font-weight: 900; color: #fbbf24; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); letter-spacing: 3px; }
+        .logo-modern {
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        color: #374151;
+    } font-size: 2.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; }
+        .logo .xpo { color: #ef4444; }
+        .logo .logistics { color: white; }
+        .header h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 8px; }
+        .date { font-size: 1rem; opacity: 0.9; }
+        .main { display: flex; flex-direction: column; gap: 30px; }
+        .form-section, .summary-section, .lists-section, .actions-section { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; }
+        .form-container { max-width: 500px; margin: 0 auto; }
+        .form { display: flex; flex-direction: column; gap: 20px; }
+        .form h2 { color: #1e293b; font-size: 1.5rem; font-weight: 600; text-align: center; margin-bottom: 10px; }
+        .matricula-display { text-align: center; font-size: 1.1rem; color: #475569; background: #f1f5f9; padding: 12px; border-radius: 8px; }
+        .input, .textarea { width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; transition: all 0.2s ease; background: white; }
+        .input:focus, .textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .textarea { resize: vertical; min-height: 100px; }
+        .btn { padding: 16px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .btn-secondary { background: #64748b; color: white; }
+        .btn-secondary:hover { background: #475569; }
+        .btn-cargada { background: #ef4444; color: white; flex: 1; }
+        .btn-cargada:hover { background: #dc2626; }
+        .btn-vacia { background: #10b981; color: white; flex: 1; }
+        .btn-vacia:hover { background: #059669; }
+        .btn-averiada { background: #f59e0b; color: white; flex: 1; }
+        .btn-averiada:hover { background: #d97706; }
+        .btn-pdf { background: #7c3aed; color: white; }
+        .btn-pdf:hover { background: #6d28d9; }
+        .btn-whatsapp { background: #25d366; color: white; }
+        .btn-whatsapp:hover { background: #22c55e; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .estado-buttons, .form-buttons { display: flex; gap: 15px; }
+        .summary h3 { color: #1e293b; font-size: 1.3rem; margin-bottom: 20px; text-align: center; }
+        .summary-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px; }
+        .stat { text-align: center; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .stat-number { display: block; font-size: 2rem; font-weight: 700; color: #2563eb; margin-bottom: 5px; }
+        .stat-label { font-size: 0.9rem; color: #64748b; font-weight: 500; }
+        .lists-container { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .list h3 { color: #1e293b; font-size: 1.2rem; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
+        .platforms-list { display: flex; flex-direction: column; gap: 12px; }
+        .platform-card { padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafafa; transition: all 0.2s ease; }
+        .platform-card.cargada { border-left: 4px solid #ef4444; background: #fef2f2; }
+        .platform-card.vacia { border-left: 4px solid #10b981; background: #f0fdf4; }
+        .platform-card.averiada { border-left: 4px solid #f59e0b; background: #fffbeb; }
+        .platform-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .platform-matricula { font-weight: 700; font-size: 1.1rem; color: #1e293b; }
+        .platform-time { font-size: 0.85rem; color: #64748b; }
+        .platform-content { color: #475569; font-size: 0.95rem; line-height: 1.5; }
+        .empty-message { text-align: center; color: #64748b; font-style: italic; padding: 20px; }
+        .actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-width: 600px; margin: 0 auto; }
+        .hidden { display: none; }
+        @media (min-width: 768px) { .lists-container { grid-template-columns: 1fr 1fr 1fr; } }
+        @media (max-width: 767px) { .app { padding: 15px; } .header { padding: 20px 15px; } .code-logo-modern {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+        text-shadow: none;
+    } font-size: 2.2rem; } .logo-modern {
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        color: #374151;
+    } font-size: 2rem; } .estado-buttons, .form-buttons { flex-direction: column; } .actions { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="code-logo-modern">CODE</div>
+            <div class="logo-modern">
+                <span class="xpo">Xpo</span> <span class="logistics">Logistics</span>
+            </div>
+            <h1>Registro de Plataformas</h1>
+            <p class="date" id="currentDate"></p>
+        </header>
+        <main class="main">
+            <section class="form-section fade-in">
+                <div class="form-container">
+                    <div id="step1" class="form">
+                        <h2>Paso 1: Matrícula de la Plataforma</h2>
+                        <input type="text" id="matriculaInput" placeholder="Introduce la matrícula" class="input" autocomplete="off" />
+                        <button onclick="nextStep()" class="btn btn-modern btn-primary">Continuar</button>
+                    </div>
+                    <div id="step2" class="form hidden">
+                        <h2>Paso 2: Estado de la Plataforma</h2>
+                        <p class="matricula-display">Matrícula: <strong id="matriculaDisplay"></strong></p>
+                        <div class="estado-buttons">
+                            <button onclick="selectEstado('CARGADA')" class="btn btn-modern btn-cargada">🟥 CARGADA</button>
+                            <button onclick="selectEstado('VACÍA')" class="btn btn-modern btn-vacia">🟩 VACÍA</button>
+                            <button onclick="selectEstado('AVERIADA')" class="btn btn-modern btn-averiada">🛠️ AVERIADA</button>
+                        </div>
+                        <button onclick="resetForm()" class="btn btn-modern btn-secondary">Volver</button>
+                    </div>
+                    <div id="step3" class="form hidden">
+                        <h2>Paso 3: Contenido de la Plataforma</h2>
+                        <p class="matricula-display">Matrícula: <strong id="matriculaDisplay2"></strong> - Estado: <strong id="estadoDisplay"></strong></p>
+                        <textarea id="contenidoInput" placeholder="Describe qué contiene la plataforma o el problema..." class="textarea" rows="4"></textarea>
+                        <div class="form-buttons">
+                            <button onclick="registrarPlataforma()" class="btn btn-modern btn-primary">Registrar</button>
+                            <button onclick="goToStep(2)" class="btn btn-modern btn-secondary">Volver</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="summary-section fade-in">
+                <div class="summary">
+                    <h3>Resumen del día</h3>
+                    <div class="summary-stats">
+                        <div class="stat"><span class="stat-number" id="cargadasCount">0</span><span class="stat-label">🟥 Cargadas</span></div>
+                        <div class="stat"><span class="stat-number" id="vaciasCount">0</span><span class="stat-label">🟩 Vacías</span></div>
+                        <div class="stat"><span class="stat-number" id="averiadasCount">0</span><span class="stat-label">🛠️ Averíadas</span></div>
+                        <div class="stat"><span class="stat-number" id="totalCount">0</span><span class="stat-label">Total</span></div>
+                    </div>
+                </div>
+            </section>
+            <section class="lists-section fade-in">
+                <div class="lists-container">
+                    <div class="list">
+                        <h3>🟥 Plataformas Cargadas (<span id="cargadasListCount">0</span>)</h3>
+                        <div class="platforms-list" id="cargadasList">
+                            <div class="empty-message">No hay plataformas cargadas registradas</div>
+                        </div>
+                    </div>
+                    <div class="list">
+                        <h3>🟩 Plataformas Vacías (<span id="vaciasListCount">0</span>)</h3>
+                        <div class="platforms-list" id="vaciasList">
+                            <div class="empty-message">No hay plataformas vacías registradas</div>
+                        </div>
+                    </div>
+                    <div class="list">
+                        <h3>🛠️ Plataformas Averíadas (<span id="averiadasListCount">0</span>)</h3>
+                        <div class="platforms-list" id="averiadasList">
+                            <div class="empty-message">No hay plataformas averíadas registradas</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="actions-section fade-in">
+                <div class="actions">
+                    <button onclick="generatePDF()" class="btn btn-modern btn-pdf">📄 Generar PDF</button>
+                    <button onclick="shareWhatsApp()" class="btn btn-modern btn-whatsapp">📱 Enviar por WhatsApp</button>
+                    <button onclick="clearData()" class="btn btn-modern btn-danger">🗑️ Limpiar Registros</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        let plataformas = [];
+        let currentStep = 1;
+        let currentMatricula = '';
+        let currentEstado = '';
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            updateDisplay();
+            updateDate();
+        });
+        function updateDate() {
+            const today = new Date();
+            const dateString = today.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('currentDate').textContent = dateString;
+        }
+        function getStorageKey() {
+            const today = new Date().toDateString();
+            return 'plataformas-' + today;
+        }
+        function loadData() {
+            const savedData = localStorage.getItem(getStorageKey());
+            if (savedData) {
+                plataformas = JSON.parse(savedData);
+            }
+        }
+        function saveData() {
+            localStorage.setItem(getStorageKey(), JSON.stringify(plataformas));
+        }
+        function nextStep() {
+            const matricula = document.getElementById('matriculaInput').value.trim();
+            if (matricula) {
+                currentMatricula = matricula.toUpperCase();
+                document.getElementById('matriculaDisplay').textContent = currentMatricula;
+                document.getElementById('matriculaDisplay2').textContent = currentMatricula;
+                animateStepTransition(2);
+            } else {
+                alert('Por favor, introduce una matrícula válida');
+            }
+        }
+        function selectEstado(estado) {
+            currentEstado = estado;
+            document.getElementById('estadoDisplay').textContent = estado;
+            
+            if (estado === 'VACÍA') {
+                const nuevaPlataforma = {
+                    id: Date.now(),
+                    matricula: currentMatricula,
+                    estado: estado,
+                    contenido: '',
+                    timestamp: new Date().toLocaleTimeString('es-ES')
+                };
+                plataformas.push(nuevaPlataforma);
+                saveData();
+                updateDisplay();
+                resetForm();
+            } else {
+                animateStepTransition(3);
+            }
+        }
+        function registrarPlataforma() {
+            const contenido = document.getElementById('contenidoInput').value.trim();
+            if (contenido) {
+                const nuevaPlataforma = {
+                    id: Date.now(),
+                    matricula: currentMatricula,
+                    estado: currentEstado,
+                    contenido: contenido,
+                    timestamp: new Date().toLocaleTimeString('es-ES')
+                };
+                plataformas.push(nuevaPlataforma);
+                saveData();
+                updateDisplay();
+                resetForm();
+            } else {
+                alert('Por favor, describe el contenido de la plataforma');
+            }
+        }
+        
+function animateStepTransition(step) {
+    goToStep(step);
+    const stepElement = document.getElementById('step' + step);
+    stepElement.classList.remove('fade-in');
+    void stepElement.offsetWidth;
+    stepElement.classList.add('fade-in');
+}
+
+function goToStep(step) {
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById('step' + i).classList.add('hidden');
+            }
+            document.getElementById('step' + step).classList.remove('hidden');
+            currentStep = step;
+        }
+        function resetForm() {
+            currentStep = 1;
+            currentMatricula = '';
+            currentEstado = '';
+            document.getElementById('matriculaInput').value = '';
+            document.getElementById('contenidoInput').value = '';
+            animateStepTransition(1);
+        }
+        function updateDisplay() {
+            const cargadas = plataformas.filter(p => p.estado === 'CARGADA');
+            const vacias = plataformas.filter(p => p.estado === 'VACÍA');
+            const averiadas = plataformas.filter(p => p.estado === 'AVERIADA');
+            document.getElementById('cargadasCount').textContent = cargadas.length;
+            document.getElementById('vaciasCount').textContent = vacias.length;
+            document.getElementById('averiadasCount').textContent = averiadas.length;
+            document.getElementById('totalCount').textContent = plataformas.length;
+            document.getElementById('cargadasListCount').textContent = cargadas.length;
+            document.getElementById('vaciasListCount').textContent = vacias.length;
+            document.getElementById('averiadasListCount').textContent = averiadas.length;
+            updateList('cargadasList', cargadas, 'cargada');
+            updateList('vaciasList', vacias, 'vacia');
+            updateList('averiadasList', averiadas, 'averiada');
+        }
+        function updateList(listId, items, className) {
+            const listElement = document.getElementById(listId);
+            if (items.length === 0) {
+                listElement.innerHTML = '<div class="empty-message">No hay plataformas ' + (className === 'cargada' ? 'cargadas' : className === 'vacia' ? 'vacías' : 'averíadas') + ' registradas</div>';
+            } else {
+                listElement.innerHTML = items.map(item => 
+                    '<div class="platform-card ' + className + '">' +
+                        '<div class="platform-header">' +
+                            '<span class="platform-matricula">' + item.matricula + '</span>' +
+                            '<span class="platform-time">' + item.timestamp + '</span>' +
+                        '</div>' +
+                        (item.contenido ? '<div class="platform-content">' + item.contenido + '</div>' : '') +
+                    '</div>'
+                ).join('');
+            }
+        }
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const today = new Date();
+            const dateString = today.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }).toUpperCase();
+
+            const cargadas = plataformas.filter(p => p.estado === 'CARGADA');
+            const vacias = plataformas.filter(p => p.estado === 'VACÍA');
+            const averiadas = plataformas.filter(p => p.estado === 'AVERIADA');
+
+            let yPosition = 25;
+
+            // Header del PDF
+            doc.setFillColor(37, 99, 235);
+            doc.rect(0, 0, 210, 45, 'F');
+
+            // Logo CODE
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(24);
+            doc.setTextColor(251, 191, 36);
+            doc.text('CODE', 105, 20, { align: 'center' });
+
+            // Logo Xpo Logistics
+            doc.setFontSize(20);
+            doc.setTextColor(255, 255, 255);
+            doc.text('XPO', 85, 32);
+            doc.setTextColor(239, 68, 68);
+            doc.text('LOGISTICS', 105, 32);
+
+            // Título y fecha
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.setTextColor(255, 255, 255);
+            doc.text('REPORTE DIARIO DE PLATAFORMAS', 105, 40, { align: 'center' });
+
+            // Fecha
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(dateString, 105, 55, { align: 'center' });
+
+            yPosition = 70;
+
+            // Función para crear columnas lado a lado
+            function createTwoColumnTables(leftTitle, leftData, rightTitle, rightData, startY) {
+                let currentY = startY;
+                const leftX = 15;
+                const rightX = 110;
+                const columnWidth = 85;
+
+                // Títulos de las columnas
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                
+                if (leftData.length > 0) {
+                    doc.text(leftTitle.toUpperCase(), leftX, currentY);
+                }
+                if (rightData.length > 0) {
+                    doc.text(rightTitle.toUpperCase(), rightX, currentY);
+                }
+                
+                currentY += 8;
+
+                // Headers de las tablas
+                if (leftData.length > 0) {
+                    doc.setFillColor(248, 250, 252);
+                    doc.rect(leftX, currentY - 3, columnWidth, 6, 'F');
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9);
+                    doc.text('MATRICULA', leftX + 2, currentY);
+                    doc.text('CONTENIDO', leftX + 35, currentY);
+                }
+
+                if (rightData.length > 0) {
+                    doc.setFillColor(248, 250, 252);
+                    doc.rect(rightX, currentY - 3, columnWidth, 6, 'F');
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9);
+                    doc.text('MATRICULA', rightX + 2, currentY);
+                }
+
+                currentY += 8;
+
+                // Datos de las tablas
+                const maxRows = Math.max(leftData.length, rightData.length);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+
+                for (let i = 0; i < maxRows; i++) {
+                    // Fondo alternado
+                    if (i % 2 === 0) {
+                        if (leftData[i]) {
+                            doc.setFillColor(249, 250, 251);
+                            doc.rect(leftX, currentY - 3, columnWidth, 6, 'F');
+                        }
+                        if (rightData[i]) {
+                            doc.setFillColor(249, 250, 251);
+                            doc.rect(rightX, currentY - 3, columnWidth, 6, 'F');
+                        }
+                    }
+
+                    doc.setTextColor(0, 0, 0);
+
+                    // Columna izquierda (cargadas)
+                    if (leftData[i]) {
+                        doc.text(leftData[i].matricula.toUpperCase(), leftX + 2, currentY);
+                        if (leftData[i].contenido) {
+                            const content = leftData[i].contenido.toUpperCase();
+                            const lines = doc.splitTextToSize(content, 45);
+                            doc.text(lines, leftX + 35, currentY);
+                            if (lines.length > 1) {
+                                currentY += (lines.length - 1) * 3;
+                            }
+                        }
+                    }
+
+                    // Columna derecha (vacías)
+                    if (rightData[i]) {
+                        doc.text(rightData[i].matricula.toUpperCase(), rightX + 2, currentY);
+                    }
+
+                    currentY += 6;
+
+                    // Verificar si necesitamos nueva página
+                    if (currentY > 250) {
+                        doc.addPage();
+                        currentY = 20;
+                    }
+                }
+
+                return currentY + 10;
+            }
+
+            // Función para crear tabla simple (para averiadas)
+            function createSingleTable(title, data, startY) {
+                let currentY = startY;
+                if (data.length === 0) return currentY;
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(title.toUpperCase(), 15, currentY);
+                currentY += 8;
+
+                // Header
+                doc.setFillColor(248, 250, 252);
+                doc.rect(15, currentY - 3, 180, 6, 'F');
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(9);
+                doc.text('MATRICULA', 17, currentY);
+                doc.text('DESCRIPCION', 70, currentY);
+                currentY += 8;
+
+                // Datos
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                data.forEach((platform, index) => {
+                    if (index % 2 === 0) {
+                        doc.setFillColor(249, 250, 251);
+                        doc.rect(15, currentY - 3, 180, 6, 'F');
+                    }
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(platform.matricula.toUpperCase(), 17, currentY);
+                    if (platform.contenido) {
+                        const content = platform.contenido.toUpperCase();
+                        const lines = doc.splitTextToSize(content, 120);
+                        doc.text(lines, 70, currentY);
+                        if (lines.length > 1) {
+                            currentY += (lines.length - 1) * 3;
+                        }
+                    }
+                    currentY += 6;
+
+                    if (currentY > 250) {
+                        doc.addPage();
+                        currentY = 20;
+                    }
+                });
+
+                return currentY + 10;
+            }
+
+            // Crear las tablas en columnas
+            if (cargadas.length > 0 || vacias.length > 0) {
+                yPosition = createTwoColumnTables(
+                    'PLATAFORMAS CARGADAS (' + cargadas.length + ')',
+                    cargadas,
+                    'PLATAFORMAS VACIAS (' + vacias.length + ')',
+                    vacias,
+                    yPosition
+                );
+            }
+
+            // Crear tabla de averiadas debajo
+            if (averiadas.length > 0) {
+                yPosition = createSingleTable('PLATAFORMAS AVERIADAS (' + averiadas.length + ')', averiadas, yPosition);
+            }
+
+            // Footer en todas las páginas
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                doc.setTextColor(75, 85, 99);
+                doc.text('PAGINA ' + i + ' DE ' + pageCount, 170, 290);
+                doc.text('GENERADO POR XPO LOGISTICS', 20, 290);
+            }
+
+            const fileName = 'reporte-plataformas-' + today.toISOString().split('T')[0] + '.pdf';
+            doc.save(fileName);
+        }
+        function shareWhatsApp() {
+            const today = new Date();
+            const dateString = today.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const cargadas = plataformas.filter(p => p.estado === 'CARGADA');
+            const vacias = plataformas.filter(p => p.estado === 'VACÍA');
+            const averiadas = plataformas.filter(p => p.estado === 'AVERIADA');
+            let message = '📊 *Reporte de Plataformas - ' + dateString + '*\n\n' +
+                '📈 *Resumen:*\n' +
+                '• Total: ' + plataformas.length + ' plataformas\n' +
+                '• 🟥 Cargadas: ' + cargadas.length + '\n' +
+                '• 🟩 Vacías: ' + vacias.length + '\n';
+            if (averiadas.length > 0) {
+                message += '• 🛠️ Averíadas: ' + averiadas.length + '\n';
+            }
+            message += '\n🟥 *Plataformas Cargadas:*\n' +
+                cargadas.map(p => '• ' + p.matricula + ' - ' + p.contenido).join('\n') + '\n\n' +
+                '🟩 *Plataformas Vacías:*\n' +
+                vacias.map(p => '• ' + p.matricula).join('\n');
+            if (averiadas.length > 0) {
+                message += '\n\n🛠️ *Plataformas Averíadas:*\n' +
+                           averiadas.map(p => '• ' + p.matricula + ' - ' + p.contenido).join('\n');
+            }
+            const phoneNumber = prompt('Introduce el número de teléfono (ej. 34600123456) o déjalo vacío para abrir WhatsApp Web sin número:');
+            let whatsappUrl;
+            if (phoneNumber && phoneNumber.trim()) {
+                whatsappUrl = 'https://wa.me/' + phoneNumber + '?text=' + encodeURIComponent(message);
+            } else {
+                whatsappUrl = 'https://web.whatsapp.com/send?text=' + encodeURIComponent(message);
+            }
+            
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.location.href = whatsappUrl;
+    } else {
+        window.open(whatsappUrl, '_blank');
+    }
+    
+        }
+        function clearData() {
+            if (confirm('¿Estás seguro de que quieres limpiar todos los registros del día?')) {
+                plataformas = [];
+                saveData();
+                updateDisplay();
+                resetForm();
+            }
+        }
+    </script>
+</body>
+</html>
+
