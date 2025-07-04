@@ -1,17 +1,657 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xpo Logistics - Registro de Plataformas</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Xpo Logistics - Registro de Plataformas</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+window.addEventListener('DOMContentLoaded', () => {
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = document.getElementById('greeting');
+  if (hour < 12) {
+    greeting.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greeting.textContent = "Buenas tardes 👋";
+  } else {
+    greeting.textContent = "Buenas noches 🌙";
+  }
+  setTimeout(() => {
+    const msg = document.getElementById('welcome-message');
+    msg.style.animation = 'fadeOut 0.8s ease forwards';
+    setTimeout(() => msg.remove(), 900);
+  }, 3000);
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById('greeting');
+  if (hour < 12) {
+    greetingEl.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greetingEl.textContent = "Buenas tardes 👋";
+  } else {
+    greetingEl.textContent = "Buenas noches 🌙";
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById('greeting');
+  if (hour < 12) {
+    greetingEl.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greetingEl.textContent = "Buenas tardes 👋";
+  } else {
+    greetingEl.textContent = "Buenas noches 🌙";
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById('greeting');
+  if (!greetingEl) return;
+  if (hour < 12) {
+    greetingEl.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greetingEl.textContent = "Buenas tardes 👋";
+  } else {
+    greetingEl.textContent = "Buenas noches 🌙";
+  }
+});
+
+</script>
+<style>@keyframes fadePlatform {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
+@keyframes logoGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+    text-shadow: none;
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.03);
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.code-logo-modern {
+  animation: logoGlow 1.4s ease-out forwards;
+}
+
+
+
+
+@keyframes fadeStepIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+
+
+
+.header {
+  background: #f1f5f9 !important;
+  border: 1px solid #d1d5db;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+  padding: 28px 20px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+.logo-modern {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #374151;
+}
+.logo-modern .xpo {
+  color: #ef4444;
+}
+.code-logo-modern {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.form-section, .summary-section, .lists-section, .actions-section {
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.input, .textarea {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 14px;
+}
+
+.input:focus, .textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+
+.platform-card
+.platform-card
+.platform-card
+
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.summary .stat {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 60px;
+  background-color: transparent;
+  z-index: 1000;
+  transition: width 0.3s ease;
+}
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hamburger {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+.sidebar-menu {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 12px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+.sidebar-menu
+.sidebar-menu a {
+  text-decoration: none;
+  color: #1e293b;
+  font-weight: 600;
+}
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+  .sidebar-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #ffffff;
+    padding: 10px 12px;
+    margin-top: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+  }
+  .sidebar-menu
+}
+.app {
+  margin-left: 60px;
+}
+@media (max-width: 768px) {
+  .app {
+    margin-left: 0;
+  }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards;
+}
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.progress-indicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+.progress-step {
+  width: 12px;
+  height: 12px;
+  background-color: #d1d5db;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+.progress-step
+
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #2563eb;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  border: none;
+  z-index: 1001;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.floating-btn:hover {
+  background-color: #1e40af;
+  transform: translateY(-2px);
+}
+
+
+.btn-resumen {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+.btn-resumen:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .btn {
+    font-size: 0.95rem;
+    padding: 10px 16px;
+  }
+  .welcome-box h2,
+  #welcome-overlay h2#greeting {
+    font-size: 1.5rem;
+  }
+  .welcome-box p {
+    font-size: 0.9rem;
+  }
+}
+
+.btn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-cargada {
+  background-color: #e11d48; /* rojo XPO elegante */
+  color: white;
+}
+.btn-vacia {
+  background-color: #6b7280; /* gris medio */
+  color: white;
+}
+.btn-averiada {
+  background-color: #f59e0b; /* naranja suave */
+  color: white;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+
+
+#welcome-overlay h2#greeting {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  opacity: 0;
+  animation: helloEffect 2.5s ease forwards;
+  background: linear-gradient(90deg, #000, #444, #000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+  transform: translateY(20px);
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+}
+
+
+@keyframes helloEffect {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+    letter-spacing: 10px;
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(0px);
+    letter-spacing: 2px;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+}
+
+.logo-animation {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ef4444;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: fadeInLogo 1.2s ease-in forwards;
+  animation-delay: 0.5s;
+}
+@keyframes fadeInLogo {
+  to {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.welcome-overlay {
+  position: fixed;
+  z-index: 99999;
+  inset: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: welcomeFadeOut 0.5s ease-out 2.5s forwards;
+}
+.welcome-box {
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  animation: fadeSlideIn 0.8s ease-out;
+}
+.welcome-box h2 {
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+  color: #111827;
+}
+.welcome-box p {
+  font-size: 1rem;
+  color: #4b5563;
+}
+@keyframes welcomeFadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+
+}
+
+/* Logo más pequeño y limpio */
+.code-logo-modern {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111827;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+/* Header animado con fondo degradado más elegante */
+.header {
+    background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+    animation: headerFade 1s ease-out;
+    box-shadow: none;
+}
+
+@keyframes headerFade {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tipografía simulada XPO Logistics */
+.logo-modern {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #111827;
+}
+.logo-modern .xpo {
+    color: #ef4444;
+}
+
+/* Botones refinados */
+.btn-modern {
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease-in-out;
+}
+
+.btn-cargada {
+    background-color: #f87171;
+}
+.btn-cargada:hover {
+    background-color: #ef4444;
+}
+
+.btn-vacia {
+    background-color: #34d399;
+}
+.btn-vacia:hover {
+    background-color: #10b981;
+}
+
+.btn-averiada {
+    background-color: #fbbf24;
+}
+.btn-averiada:hover {
+    background-color: #f59e0b;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+.btn-secondary:hover {
+    background-color: #d1d5db;
+}
+
+.btn-pdf {
+    background-color: #c084fc;
+}
+.btn-pdf:hover {
+    background-color: #a855f7;
+}
+
+.btn-whatsapp {
+    background-color: #22c55e;
+}
+.btn-whatsapp:hover {
+    background-color: #16a34a;
+}
+
+.btn-danger {
+    background-color: #f87171;
+}
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+/* Modernización visual estilo Apple + microinteracciones */
+.logo-modern .xpo {
+    color: #ef4444;
+    font-weight: 700;
+}
+.btn, .input, .textarea {
+    transition: all 0.3s ease-in-out;
+}
+.btn-modern {
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    background-color: #fff;
+    color: #111827;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.btn-modern:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-2px);
+}
+.main section {
+    margin-bottom: 40px;
+}
+.estado-buttons .btn {
+    flex: 1;
+    padding: 14px 12px;
+    font-size: 0.95rem;
+}
+
+/* Animaciones suaves estilo Apple */
+@keyframes fadeSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeSlideIn 0.6s ease-out both;
+    will-change: opacity, transform;
+}
+
+
+
+input, textarea, .btn {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+input:focus, textarea:focus {
+    transform: scale(1.02);
+}
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6; }
         .app { min-height: 100vh; max-width: 1200px; margin: 0 auto; padding: 20px; }
         .header { text-align: center; margin-bottom: 40px; padding: 30px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 16px; color: white; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2); }
-        .code-logo { font-size: 2.8rem; font-weight: 900; color: #fbbf24; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); letter-spacing: 3px; }
-        .logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; }
+        .code-logo-modern {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+        text-shadow: none;
+    } font-size: 2.8rem; font-weight: 900; color: #fbbf24; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); letter-spacing: 3px; }
+        .logo-modern {
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        color: #374151;
+    } font-size: 2.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; }
         .logo .xpo { color: #ef4444; }
         .logo .logistics { color: white; }
         .header h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 8px; }
@@ -51,112 +691,541 @@
         .lists-container { display: grid; grid-template-columns: 1fr; gap: 30px; }
         .list h3 { color: #1e293b; font-size: 1.2rem; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
         .platforms-list { display: flex; flex-direction: column; gap: 12px; }
-        .platform-card { padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafafa; transition: all 0.2s ease; }
-        .platform-card.cargada { border-left: 4px solid #ef4444; background: #fef2f2; }
-        .platform-card.vacia { border-left: 4px solid #10b981; background: #f0fdf4; }
-        .platform-card.averiada { border-left: 4px solid #f59e0b; background: #fffbeb; }
-        .platform-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .platform-matricula { font-weight: 700; font-size: 1.1rem; color: #1e293b; }
-        .platform-time { font-size: 0.85rem; color: #64748b; }
-        .platform-content { color: #475569; font-size: 0.95rem; line-height: 1.5; }
+        
+        .platform-card
+        .platform-card
+        .platform-card
+        
+        
+        
+        
         .empty-message { text-align: center; color: #64748b; font-style: italic; padding: 20px; }
         .actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-width: 600px; margin: 0 auto; }
         .hidden { display: none; }
         @media (min-width: 768px) { .lists-container { grid-template-columns: 1fr 1fr 1fr; } }
-        @media (max-width: 767px) { .app { padding: 15px; } .header { padding: 20px 15px; } .code-logo { font-size: 2.2rem; } .logo { font-size: 2rem; } .estado-buttons, .form-buttons { flex-direction: column; } .actions { grid-template-columns: 1fr; } }
-    </style>
+        @media (max-width: 767px) { .app { padding: 15px; } .header { padding: 20px 15px; } .code-logo-modern {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+        text-shadow: none;
+    } font-size: 2.2rem; } .logo-modern {
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        color: #374151;
+    } font-size: 2rem; } .estado-buttons, .form-buttons { flex-direction: column; } .actions { grid-template-columns: 1fr; } }
+/* Spinner estilo Apple */
+}
+.check-icon {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+  padding: 14px 22px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  background-color: #1f2937;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn:hover {
+  background-color: #111827;
+  transform: translateY(-1px);
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+    
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-registrado {
+  background-color: #22c55e !important;
+  color: white !important;
+  border-radius: 9999px !important;
+  transition: all 0.3s ease;
+}
+
+/* ========== MEJORA APPLE SÓLO ANIMACIÓN Y FEEDBACK (RESPETA COLORES ORIGINALES) ========== */
+
+.btn, .btn-modern, .btn-resumen, .floating-btn, .btn-pdf, .btn-danger, .btn-whatsapp, .btn-cargada, .btn-vacia, .btn-averiada, .btn-primary, .btn-secondary, .btn-registrado {
+  border-radius: 14px !important;
+  font-size: 1.08rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 14px rgba(37,99,235,0.10);
+  transition: 
+    box-shadow 0.22s, 
+    transform 0.13s, 
+    background 0.18s, 
+    color 0.15s;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+  min-height: 46px;
+  /* padding se respeta el tuyo! */
+}
+
+.btn:active, .btn-modern:active, .btn-resumen:active,
+.floating-btn:active,
+.btn-pdf:active,
+.btn-danger:active,
+.btn-whatsapp:active,
+.btn-cargada:active,
+.btn-vacia:active,
+.btn-averiada:active,
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.btn:hover, .btn-modern:hover, .btn-resumen:hover,
+.floating-btn:hover,
+.btn-pdf:hover,
+.btn-danger:hover,
+.btn-whatsapp:hover,
+.btn-cargada:hover,
+.btn-vacia:hover,
+.btn-averiada:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+  box-shadow: 0 6px 28px rgba(37,99,235,0.18);
+  filter: brightness(1.045);
+}
+
+/* Disabled style */
+.btn:disabled,
+.btn-modern:disabled,
+.btn-resumen:disabled,
+.floating-btn:disabled {
+  opacity: 0.58 !important;
+  cursor: default !important;
+  filter: grayscale(0.12);
+}
+
+/* Feedback de "registrado" (puedes ajustar si lo quieres) */
+.btn-registrado {
+  border-radius: 999px !important;
+  box-shadow: 0 4px 24px rgba(34, 197, 94, 0.10) !important;
+  transition: all 0.3s;
+}
+
+/* Spinner animado */
+.spinner {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.22);
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.check-icon {
+  width: 21px;
+  height: 21px;
+  stroke: #fff;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  margin-right: 7px;
+  vertical-align: middle;
+  transition: stroke 0.2s;
+}
+.btn-registrado .check-icon {
+  stroke: #fff200;
+  animation: check-bounce 0.6s cubic-bezier(.5,1.7,.6,1.25);
+}
+@keyframes check-bounce {
+  0% { transform: scale(0.7) rotate(-12deg); opacity: 0;}
+  60% { transform: scale(1.12) rotate(10deg); opacity: 1;}
+  100% { transform: scale(1) rotate(0deg);}
+}
+
+/* Ripple effect - para todos los botones */
+.btn::after, .btn-modern::after, .btn-resumen::after, .floating-btn::after, .btn-pdf::after, .btn-danger::after, .btn-whatsapp::after, .btn-cargada::after, .btn-vacia::after, .btn-averiada::after, .btn-primary::after, .btn-secondary::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 0; height: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 100%;
+  transform: translate(-50%, -50%);
+  transition: width .34s, height .34s, opacity .33s;
+  opacity: 0;
+  pointer-events: none;
+}
+.btn:active::after, .btn-modern:active::after, .btn-resumen:active::after, .floating-btn:active::after, .btn-pdf:active::after, .btn-danger:active::after, .btn-whatsapp:active::after, .btn-cargada:active::after, .btn-vacia:active::after, .btn-averiada:active::after, .btn-primary:active::after, .btn-secondary:active::after {
+  width: 160%;
+  height: 180%;
+  opacity: 1;
+  transition: 0s;
+}
+
+/* Floating button animado */
+.floating-btn {
+  border-radius: 999px !important;
+  font-size: 1.08rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 6px 24px rgba(37,99,235,0.22), 0 1.5px 4px rgba(0,0,0,0.04) !important;
+  transition: background 0.22s, box-shadow 0.18s, transform 0.13s;
+}
+.floating-btn:hover {
+  box-shadow: 0 10px 36px rgba(37,99,235,0.32) !important;
+  transform: translateY(-2px) scale(1.04) !important;
+}
+.floating-btn:active {
+  transform: scale(0.97) !important;
+}
+
+@media (max-width: 600px) {
+  .btn, .btn-modern, .btn-resumen, .floating-btn {
+    font-size: 1.01rem !important;
+    padding: 16px 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .floating-btn {
+    font-size: 1.07rem !important;
+    padding: 16px 0 !important;
+    right: 8px !important;
+    bottom: 10px !important;
+  }
+}
+
+.btn svg, .btn-modern svg, .btn-resumen svg, .floating-btn svg {
+  transition: transform 0.2s;
+}
+.btn:active svg, .btn-modern:active svg, .btn-resumen:active svg, .floating-btn:active svg {
+  transform: scale(1.13) rotate(-9deg);
+}
+
+
+/* --- BOTÓN FLOTANTE PDF MEJORADO Y MÁS COMPACTO --- */
+.floating-btn {
+  position: fixed !important;
+  bottom: 22px !important;
+  right: 18px !important;
+  z-index: 1001;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
+  color: #fff !important;
+  border-radius: 38px !important;
+  font-size: 1rem !important;
+  font-weight: 600;
+  padding: 12px 24px !important;
+  min-width: 0 !important;
+  box-shadow: 0 4px 20px rgba(37,99,235,0.16), 0 1.5px 4px rgba(0,0,0,0.05);
+  display: flex !important;
+  align-items: center;
+  gap: 7px;
+  transition: 
+    box-shadow 0.22s,
+    background 0.21s,
+    transform 0.14s;
+}
+.floating-btn:hover {
+  background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%) !important;
+  box-shadow: 0 8px 32px rgba(37,99,235,0.23);
+  filter: brightness(1.04);
+  transform: translateY(-3px) scale(1.04);
+}
+.floating-btn:active {
+  transform: scale(0.96);
+}
+
+/* Ripple para el flotante */
+.floating-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 0; height: 0;
+  background: rgba(255,255,255,0.14);
+  border-radius: 100%;
+  transform: translate(-50%, -50%);
+  transition: width .33s, height .33s, opacity .28s;
+  opacity: 0;
+  pointer-events: none;
+}
+.floating-btn:active::after {
+  width: 150%;
+  height: 170%;
+  opacity: 1;
+  transition: 0s;
+}
+
+.floating-btn svg {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  transition: transform 0.18s;
+}
+.floating-btn:active svg {
+  transform: scale(1.13) rotate(-11deg);
+}
+
+/* Más compacto en móvil */
+@media (max-width: 600px) {
+  .floating-btn {
+    padding: 11px 16px !important;
+    font-size: 0.96rem !important;
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+  .floating-btn svg { width: 17px; height: 17px; }
+}
+
+
+/* BOTÓN FLOTANTE PDF - ULTRA COMPACTO */
+.floating-btn {
+  position: fixed !important;
+  bottom: 17px !important;
+  right: 15px !important;
+  z-index: 1001;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
+  color: #fff !important;
+  border-radius: 23px !important;
+  font-size: 0.98rem !important;
+  font-weight: 600;
+  padding: 6px 16px 6px 10px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 38px !important;
+  box-shadow: 0 2px 10px rgba(37,99,235,0.14), 0 1px 3px rgba(0,0,0,0.03);
+  display: flex !important;
+  align-items: center;
+  gap: 5px;
+  transition: box-shadow 0.17s, background 0.17s, transform 0.12s;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+.floating-btn:hover {
+  background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%) !important;
+  box-shadow: 0 7px 16px rgba(37,99,235,0.19);
+  filter: brightness(1.05);
+  transform: translateY(-2px) scale(1.04);
+}
+.floating-btn:active {
+  transform: scale(0.95);
+}
+.floating-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 0; height: 0;
+  background: rgba(255,255,255,0.13);
+  border-radius: 100%;
+  transform: translate(-50%, -50%);
+  transition: width .24s, height .24s, opacity .22s;
+  opacity: 0;
+  pointer-events: none;
+}
+.floating-btn:active::after {
+  width: 130%;
+  height: 160%;
+  opacity: 1;
+  transition: 0s;
+}
+.floating-btn svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 3px;
+  transition: transform 0.18s;
+  flex-shrink: 0;
+}
+.floating-btn:active svg {
+  transform: scale(1.09) rotate(-10deg);
+}
+@media (max-width: 600px) {
+  .floating-btn {
+    padding: 6px 7px 6px 7px !important;
+    font-size: 0.0rem !important;
+    right: 7px !important;
+    bottom: 7px !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    border-radius: 18px !important;
+  }
+  .floating-btn span {
+    display: none !important;
+  }
+  .floating-btn svg {
+    margin-right: 0;
+    width: 17px;
+    height: 17px;
+  }
+}
+
+
+/* === Animación para los tres puntos de progreso === */
+.progress-step {
+  transition: background-color 0.35s ease, transform 0.35s ease;
+}
+
+.progress-step.active {
+  background-color: #2563eb;           /* azul XPO */
+  transform: scale(1.45);
+  box-shadow: 0 0 6px rgba(37,99,235,0.45);
+}
+
+@keyframes dotPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.6); }
+  100% { transform: scale(1.45); }
+}
+
+.progress-step.active {
+  animation: dotPulse 0.6s ease forwards;
+}
+/* ================================================ */
+
+</style>
 </head>
 <body>
-    <div class="app">
-        <header class="header">
-            <div class="code-logo">CODE</div>
-            <div class="logo">
-                <span class="xpo">Xpo</span> <span class="logistics">Logistics</span>
-            </div>
-            <h1>Registro de Plataformas</h1>
-            <p class="date" id="currentDate"></p>
-        </header>
-        <main class="main">
-            <section class="form-section">
-                <div class="form-container">
-                    <div id="step1" class="form">
-                        <h2>Paso 1: Matrícula de la Plataforma</h2>
-                        <input type="text" id="matriculaInput" placeholder="Introduce la matrícula" class="input" autocomplete="off" />
-                        <button onclick="nextStep()" class="btn btn-primary">Continuar</button>
-                    </div>
-                    <div id="step2" class="form hidden">
-                        <h2>Paso 2: Estado de la Plataforma</h2>
-                        <p class="matricula-display">Matrícula: <strong id="matriculaDisplay"></strong></p>
-                        <div class="estado-buttons">
-                            <button onclick="selectEstado('CARGADA')" class="btn btn-cargada">🟥 CARGADA</button>
-                            <button onclick="selectEstado('VACÍA')" class="btn btn-vacia">🟩 VACÍA</button>
-                            <button onclick="selectEstado('AVERIADA')" class="btn btn-averiada">🛠️ AVERIADA</button>
-                        </div>
-                        <button onclick="resetForm()" class="btn btn-secondary">Volver</button>
-                    </div>
-                    <div id="step3" class="form hidden">
-                        <h2>Paso 3: Contenido de la Plataforma</h2>
-                        <p class="matricula-display">Matrícula: <strong id="matriculaDisplay2"></strong> - Estado: <strong id="estadoDisplay"></strong></p>
-                        <textarea id="contenidoInput" placeholder="Describe qué contiene la plataforma o el problema..." class="textarea" rows="4"></textarea>
-                        <div class="form-buttons">
-                            <button onclick="registrarPlataforma()" class="btn btn-primary">Registrar</button>
-                            <button onclick="goToStep(2)" class="btn btn-secondary">Volver</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="summary-section">
-                <div class="summary">
-                    <h3>Resumen del día</h3>
-                    <div class="summary-stats">
-                        <div class="stat"><span class="stat-number" id="cargadasCount">0</span><span class="stat-label">🟥 Cargadas</span></div>
-                        <div class="stat"><span class="stat-number" id="vaciasCount">0</span><span class="stat-label">🟩 Vacías</span></div>
-                        <div class="stat"><span class="stat-number" id="averiadasCount">0</span><span class="stat-label">🛠️ Averíadas</span></div>
-                        <div class="stat"><span class="stat-number" id="totalCount">0</span><span class="stat-label">Total</span></div>
-                    </div>
-                </div>
-            </section>
-            <section class="lists-section">
-                <div class="lists-container">
-                    <div class="list">
-                        <h3>🟥 Plataformas Cargadas (<span id="cargadasListCount">0</span>)</h3>
-                        <div class="platforms-list" id="cargadasList">
-                            <div class="empty-message">No hay plataformas cargadas registradas</div>
-                        </div>
-                    </div>
-                    <div class="list">
-                        <h3>🟩 Plataformas Vacías (<span id="vaciasListCount">0</span>)</h3>
-                        <div class="platforms-list" id="vaciasList">
-                            <div class="empty-message">No hay plataformas vacías registradas</div>
-                        </div>
-                    </div>
-                    <div class="list">
-                        <h3>🛠️ Plataformas Averíadas (<span id="averiadasListCount">0</span>)</h3>
-                        <div class="platforms-list" id="averiadasList">
-                            <div class="empty-message">No hay plataformas averíadas registradas</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="actions-section">
-                <div class="actions">
-                    <button onclick="generatePDF()" class="btn btn-pdf">📄 Generar PDF</button>
-                    <button onclick="shareWhatsApp()" class="btn btn-whatsapp">📱 Enviar por WhatsApp</button>
-                    <button onclick="clearData()" class="btn btn-danger">🗑️ Limpiar Registros</button>
-                </div>
-            </section>
-        </main>
-    </div>
-    <script>
+<div class="welcome-overlay" id="welcome-overlay">
+<div class="welcome-box">
+<div class="logo-animation">CODE</div>
+<h2 id="greeting">Cargando...</h2>
+<p>Bienvenido al sistema de registro de plataformas</p>
+</div>
+</div>
+<div class="app">
+
+<header class="header">
+<div class="code-logo-modern">CODE</div>
+<div class="logo-modern">
+<span class="xpo">Xpo</span> <span class="logistics">Logistics</span>
+</div>
+<h1>Registro de Plataformas</h1>
+<p class="date" id="currentDate"></p>
+</header>
+<main class="main">
+<section class="form-section fade-in">
+<div class="form-container">
+<div class="progress-indicator">
+<div class="progress-step" id="stepCircle1"></div>
+<div class="progress-step" id="stepCircle2"></div>
+<div class="progress-step" id="stepCircle3"></div>
+</div>
+<div class="form fade-in-up" id="step1">
+<h2>Paso 1: Matrícula de la Plataforma</h2>
+<input autocomplete="off" class="input" id="matriculaInput" placeholder="Introduce la matrícula" type="text"/>
+<button class="btn btn-resumen btn-modern btn-primary" onclick="nextStep()">Continuar</button>
+</div>
+<div class="form hidden fade-in-up" id="step2">
+<h2>Paso 2: Estado de la Plataforma</h2>
+<p class="matricula-display">Matrícula: <strong id="matriculaDisplay"></strong></p>
+<div class="estado-buttons">
+<button class="btn btn-resumen btn-modern btn-cargada" onclick="selectEstado('CARGADA')"> CARGADA</button>
+<button class="btn btn-resumen btn-modern btn-vacia" onclick="selectEstado('VACÍA')"> VACÍA</button>
+<button class="btn btn-resumen btn-modern btn-averiada" onclick="selectEstado('AVERIADA')">🛠 AVERIADA</button>
+</div>
+<button class="btn btn-resumen btn-modern btn-secondary" onclick="resetForm()">Volver</button>
+</div>
+<div class="form hidden fade-in-up" id="step3">
+<h2>Paso 3: Contenido de la Plataforma</h2>
+<p class="matricula-display">Matrícula: <strong id="matriculaDisplay2"></strong> - Estado: <strong id="estadoDisplay"></strong></p>
+<textarea class="textarea" id="contenidoInput" placeholder="Describe qué contiene la plataforma o el problema..." rows="4"></textarea>
+<div class="form-buttons">
+<button class="btn btn-resumen btn-modern btn-primary" onclick="registrarPlataforma()">Registrar</button>
+<button class="btn btn-resumen btn-modern btn-secondary" onclick="goToStep(2)">Volver</button>
+</div>
+</div>
+</div>
+</section>
+<section class="summary-section fade-in">
+<div class="summary">
+<h3>Resumen del día</h3>
+<div class="summary-stats">
+<div class="stat"><span class="stat-number" id="cargadasCount">0</span><span class="stat-label"> Plataformas cargadas</span></div>
+<div class="stat"><span class="stat-number" id="vaciasCount">0</span><span class="stat-label"> Plataformas vacías</span></div>
+<div class="stat"><span class="stat-number" id="averiadasCount">0</span><span class="stat-label">🛠 Averíadas</span></div>
+<div class="stat"><span class="stat-number" id="totalCount">0</span><span class="stat-label">Total</span></div>
+</div>
+</div>
+</section>
+<section class="lists-section fade-in">
+<div class="lists-container">
+<div class="list">
+<h3>Plataformas cargadas (<span id="cargadasListCount">0</span>)</h3>
+<div class="platforms-list" id="cargadasList">
+<div class="empty-message">No hay plataformas cargadas registradas</div>
+</div>
+</div>
+<div class="list">
+<h3>Plataformas vacías (<span id="vaciasListCount">0</span>)</h3>
+<div class="platforms-list" id="vaciasList">
+<div class="empty-message">No hay plataformas vacías registradas</div>
+</div>
+</div>
+<div class="list">
+<h3>🛠 Plataformas averiadas (<span id="averiadasListCount">0</span>)</h3>
+<div class="platforms-list" id="averiadasList">
+<div class="empty-message">No hay plataformas averíadas registradas</div>
+</div>
+</div>
+</div>
+</section>
+<section class="actions-section fade-in">
+<div class="actions">
+<button class="btn btn-resumen btn-modern btn-pdf" onclick="generatePDF()">📄 Generar PDF</button>
+<button class="btn btn-resumen btn-modern btn-danger" onclick="clearData()">🗑 Limpiar Registros</button>
+</div>
+</section>
+
+<button class="floating-btn" onclick="generatePDF()" title="Generar PDF">
+  <svg fill="white" height="16" width="16" viewBox="0 0 16 16"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5L9.5 0H4zm5 1.5L13.5 6H10a1 1 0 0 1-1-1V1.5zM4 15a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4v4a2 2 0 0 0 2 2h4v7a1 1 0 0 1-1 1H4z"></path></svg>
+  <span>PDF</span>
+</button>
+
+</main>
+</div>
+<script>
         let plataformas = [];
         let currentStep = 1;
         let currentMatricula = '';
         let currentEstado = '';
-        document.addEventListener('DOMContentLoaded', function() {
-            loadData();
-            updateDisplay();
-            updateDate();
-        });
+        
         function updateDate() {
             const today = new Date();
             const dateString = today.toLocaleDateString('es-ES', {
@@ -186,7 +1255,7 @@
                 currentMatricula = matricula.toUpperCase();
                 document.getElementById('matriculaDisplay').textContent = currentMatricula;
                 document.getElementById('matriculaDisplay2').textContent = currentMatricula;
-                goToStep(2);
+                animateStepTransition(2);
             } else {
                 alert('Por favor, introduce una matrícula válida');
             }
@@ -206,9 +1275,23 @@
                 plataformas.push(nuevaPlataforma);
                 saveData();
                 updateDisplay();
-                resetForm();
+                const btn = document.querySelector('#step3 button.btn-primary');
+                btn.innerHTML = '<span class="spinner"></span> Registrando...';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                  btn.innerHTML = '<svg class="check-icon" viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6" /></svg> Registrado';
+                  btn.style.backgroundColor = "#22c55e";
+
+                  setTimeout(() => {
+                    btn.innerHTML = 'Registrar';
+                    btn.style.backgroundColor = "";
+                    btn.disabled = false;
+                    resetForm();
+                  }, 1200);
+                }, 500);
             } else {
-                goToStep(3);
+                animateStepTransition(3);
             }
         }
         function registrarPlataforma() {
@@ -224,12 +1307,35 @@
                 plataformas.push(nuevaPlataforma);
                 saveData();
                 updateDisplay();
-                resetForm();
+                const btn = document.querySelector('#step3 button.btn-primary');
+                btn.innerHTML = '<span class="spinner"></span> Registrando...';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                  btn.innerHTML = '<svg class="check-icon" viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6" /></svg> Registrado';
+                  btn.style.backgroundColor = "#22c55e";
+
+                  setTimeout(() => {
+                    btn.innerHTML = 'Registrar';
+                    btn.style.backgroundColor = "";
+                    btn.disabled = false;
+                    resetForm();
+                  }, 1200);
+                }, 500);
             } else {
                 alert('Por favor, describe el contenido de la plataforma');
             }
         }
-        function goToStep(step) {
+        
+function animateStepTransition(step) {
+    goToStep(step);
+    const stepElement = document.getElementById('step' + step);
+    stepElement.classList.remove('fade-in');
+    void stepElement.offsetWidth;
+    stepElement.classList.add('fade-in');
+}
+
+function goToStep(step) {
             for (let i = 1; i <= 3; i++) {
                 document.getElementById('step' + i).classList.add('hidden');
             }
@@ -242,16 +1348,16 @@
             currentEstado = '';
             document.getElementById('matriculaInput').value = '';
             document.getElementById('contenidoInput').value = '';
-            goToStep(1);
+            animateStepTransition(1);
         }
         function updateDisplay() {
             const cargadas = plataformas.filter(p => p.estado === 'CARGADA');
             const vacias = plataformas.filter(p => p.estado === 'VACÍA');
             const averiadas = plataformas.filter(p => p.estado === 'AVERIADA');
-            document.getElementById('cargadasCount').textContent = cargadas.length;
-            document.getElementById('vaciasCount').textContent = vacias.length;
-            document.getElementById('averiadasCount').textContent = averiadas.length;
-            document.getElementById('totalCount').textContent = plataformas.length;
+            animateCount('cargadasCount', cargadas.length);
+            animateCount('vaciasCount', vacias.length);
+            animateCount('averiadasCount', averiadas.length);
+            animateCount('totalCount', plataformas.length);
             document.getElementById('cargadasListCount').textContent = cargadas.length;
             document.getElementById('vaciasListCount').textContent = vacias.length;
             document.getElementById('averiadasListCount').textContent = averiadas.length;
@@ -507,17 +1613,17 @@
             let message = '📊 *Reporte de Plataformas - ' + dateString + '*\n\n' +
                 '📈 *Resumen:*\n' +
                 '• Total: ' + plataformas.length + ' plataformas\n' +
-                '• 🟥 Cargadas: ' + cargadas.length + '\n' +
-                '• 🟩 Vacías: ' + vacias.length + '\n';
+                '•  Plataformas cargadas: ' + cargadas.length + '\n' +
+                '•  Plataformas vacías: ' + vacias.length + '\n';
             if (averiadas.length > 0) {
-                message += '• 🛠️ Averíadas: ' + averiadas.length + '\n';
+                message += '• 🛠 Averíadas: ' + averiadas.length + '\n';
             }
-            message += '\n🟥 *Plataformas Cargadas:*\n' +
+            message += '\n *Plataformas Plataformas cargadas:*\n' +
                 cargadas.map(p => '• ' + p.matricula + ' - ' + p.contenido).join('\n') + '\n\n' +
-                '🟩 *Plataformas Vacías:*\n' +
+                ' *Plataformas Plataformas vacías:*\n' +
                 vacias.map(p => '• ' + p.matricula).join('\n');
             if (averiadas.length > 0) {
-                message += '\n\n🛠️ *Plataformas Averíadas:*\n' +
+                message += '\n\n🛠 *Plataformas Averíadas:*\n' +
                            averiadas.map(p => '• ' + p.matricula + ' - ' + p.contenido).join('\n');
             }
             const phoneNumber = prompt('Introduce el número de teléfono (ej. 34600123456) o déjalo vacío para abrir WhatsApp Web sin número:');
@@ -527,7 +1633,13 @@
             } else {
                 whatsappUrl = 'https://web.whatsapp.com/send?text=' + encodeURIComponent(message);
             }
-            window.open(whatsappUrl, '_blank');
+            
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.location.href = whatsappUrl;
+    } else {
+        window.open(whatsappUrl, '_blank');
+    }
+    
         }
         function clearData() {
             if (confirm('¿Estás seguro de que quieres limpiar todos los registros del día?')) {
@@ -537,7 +1649,117 @@
                 resetForm();
             }
         }
-    </script>
-</body>
-</html>
+    
+window.addEventListener('DOMContentLoaded', () => {
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = document.getElementById('greeting');
+  if (hour < 12) {
+    greeting.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greeting.textContent = "Buenas tardes 👋";
+  } else {
+    greeting.textContent = "Buenas noches 🌙";
+  }
+  setTimeout(() => {
+    const msg = document.getElementById('welcome-message');
+    msg.style.animation = 'fadeOut 0.8s ease forwards';
+    setTimeout(() => msg.remove(), 900);
+  }, 3000);
+});
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById('greeting');
+  if (hour < 12) {
+    greetingEl.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greetingEl.textContent = "Buenas tardes 👋";
+  } else {
+    greetingEl.textContent = "Buenas noches 🌙";
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById('greeting');
+  if (hour < 12) {
+    greetingEl.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greetingEl.textContent = "Buenas tardes 👋";
+  } else {
+    greetingEl.textContent = "Buenas noches 🌙";
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById('greeting');
+  if (!greetingEl) return;
+  if (hour < 12) {
+    greetingEl.textContent = "Buenos días 👋";
+  } else if (hour < 20) {
+    greetingEl.textContent = "Buenas tardes 👋";
+  } else {
+    greetingEl.textContent = "Buenas noches 🌙";
+  }
+});
+
+</script>
+<div class="welcome-container fade-in" id="welcome-message">
+<div class="logo-animation">CODE</div>
+<h2 id="greeting"></h2>
+<p>Bienvenido al sistema de registro de plataformas.</p>
+</div>
+<script>
+function updateStepIndicator(step) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById("stepCircle" + i).classList.remove("active");
+  }
+  if (step >= 1 && step <= 3) {
+    document.getElementById("stepCircle" + step).classList.add("active");
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  updateStepIndicator(1);
+});
+function goToStep(step) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById("step" + i).classList.add("hidden");
+  }
+  document.getElementById("step" + step).classList.remove("hidden");
+  currentStep = step;
+  updateStepIndicator(step);
+}
+</script>
+
+<script>
+function animateStepTransition(step) {
+  goToStep(step);
+  const stepElement = document.getElementById('step' + step);
+  stepElement.classList.remove('fade-step');
+  void stepElement.offsetWidth;
+  stepElement.classList.add('fade-step');
+  updateStepIndicator(step);
+}
+
+// Contador animado para el resumen
+function animateCount(id, end) {
+  const el = document.getElementById(id);
+  let start = 0;
+  const duration = 600;
+  const stepTime = Math.max(Math.floor(duration / end), 20);
+  const timer = setInterval(() => {
+    start++;
+    el.textContent = start;
+    if (start >= end) clearInterval(timer);
+  }, stepTime);
+}
+
+
+</script>
+
+</body>
