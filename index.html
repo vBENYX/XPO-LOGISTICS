@@ -295,7 +295,7 @@ body {
 .progress-step {
   width: 12px;
   height: 12px;
-  background-color: #d1d5db;
+  background-color: #000;
   border-radius: 50%;
   transition: background-color 0.3s;
 }
@@ -348,8 +348,17 @@ body {
   }
   .welcome-box h2,
   #welcome-overlay h2#greeting {
-    font-size: 1.5rem;
-  }
+  font-family: 'Pacifico', cursive;
+  font-size: 3rem;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(90deg, #00C6FF, #3B82F6, #9333EA, #F43F5E, #FF8C00);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientShift 8s ease infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+}
   .welcome-box p {
     font-size: 0.9rem;
   }
@@ -386,17 +395,16 @@ body {
 
 
 #welcome-overlay h2#greeting {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #111827;
-  opacity: 0;
-  animation: helloEffect 2.5s ease forwards;
-  background: linear-gradient(90deg, #000, #444, #000);
+  font-family: 'Pacifico', cursive;
+  font-size: 3rem;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(90deg, #00C6FF, #3B82F6, #9333EA, #F43F5E, #FF8C00);
+  background-size: 400% 400%;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 2px;
-  transform: translateY(20px);
-  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  background-clip: text;
+  animation: gradientShift 8s ease infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
 }
 
 
@@ -553,7 +561,7 @@ body {
     color: #1f2937;
 }
 .btn-secondary:hover {
-    background-color: #d1d5db;
+    background-color: #000;
 }
 
 .btn-pdf {
@@ -589,13 +597,13 @@ body {
     padding: 12px 20px;
     border-radius: 12px;
     border: 1px solid #d1d5db;
-    background-color: #fff;
+    background-color: #000;
     color: #111827;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 .btn-modern:hover {
-    background-color: #f3f4f6;
+    background-color: #000;
     transform: translateY(-2px);
 }
 .main section {
@@ -1119,18 +1127,166 @@ input:focus, textarea:focus {
 }
 /* ================================================ */
 
+
+
+/* BOTÓN PDF MÁS COMPACTO */
+.floating-btn {
+  height: 42px !important;
+  padding: 8px 14px !important;
+  font-size: 0.88rem !important;
+  border-radius: 22px !important;
+}
+@media (max-width: 600px) {
+  .floating-btn span {
+    display: none !important;
+  }
+  .floating-btn {
+    padding: 8px 10px !important;
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 0 !important;
+    border-radius: 21px !important;
+  }
+}
+
+
+@keyframes countBounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.stat-number.animate {
+  animation: countBounce 0.5s ease;
+}
+
+
+.platform-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+.platform-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+  transform: translateY(-2px);
+}
+
+
+#welcome-overlay h2#greeting {
+  font-family: 'Pacifico', cursive;
+  font-size: 3rem;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(90deg, #00C6FF, #3B82F6, #9333EA, #F43F5E, #FF8C00);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientShift 8s ease infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+}
+@keyframes slideFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+#greeting {
+  font-family: 'Pacifico', cursive;
+  font-size: 3rem;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(90deg, #00C6FF, #3B82F6, #9333EA, #F43F5E, #FF8C00);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientShift 8s ease infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+#welcome-overlay .code-highlight {
+  font-family: 'Arial Black', 'Segoe UI Black', sans-serif;
+  font-weight: 900;
+  font-size: 2.6rem;
+  letter-spacing: 1px;
+  color: transparent;
+  background: linear-gradient(90deg, #00C6FF, #3B82F6, #9333EA, #F43F5E, #FF8C00);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: codeGradientShift 10s ease infinite, codeZoomFade 1.4s ease-out forwards;
+  animation-delay: 0s, 1s;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.6), 0 0 4px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+@keyframes codeGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes codeZoomFade {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+}
+}
+
+  position: fixed;
+  top: 12px;
+  right: 18px;
+  padding: 4px 10px;
+  background: rgba(30, 30, 30, 0.45);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 9999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  z-index: 9999;
+  pointer-events: none;
+}
 </style>
-</head>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&amp;display=swap" rel="stylesheet"/></head>
 <body>
 <div class="welcome-overlay" id="welcome-overlay">
 <div class="welcome-box">
 <div class="logo-animation">CODE</div>
-<h2 id="greeting">Cargando...</h2>
+<h2 id="greeting"></h2>
 <p>Bienvenido al sistema de registro de plataformas</p>
 </div>
 </div>
 <div class="app">
-
 <header class="header">
 <div class="code-logo-modern">CODE</div>
 <div class="logo-modern">
@@ -1212,12 +1368,10 @@ input:focus, textarea:focus {
 <button class="btn btn-resumen btn-modern btn-danger" onclick="clearData()">🗑 Limpiar Registros</button>
 </div>
 </section>
-
 <button class="floating-btn" onclick="generatePDF()" title="Generar PDF">
-  <svg fill="white" height="16" width="16" viewBox="0 0 16 16"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5L9.5 0H4zm5 1.5L13.5 6H10a1 1 0 0 1-1-1V1.5zM4 15a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4v4a2 2 0 0 0 2 2h4v7a1 1 0 0 1-1 1H4z"></path></svg>
-  <span>PDF</span>
+<svg fill="white" height="16" viewbox="0 0 16 16" width="16"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5L9.5 0H4zm5 1.5L13.5 6H10a1 1 0 0 1-1-1V1.5zM4 15a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4v4a2 2 0 0 0 2 2h4v7a1 1 0 0 1-1 1H4z"></path></svg>
+<span>PDF</span>
 </button>
-
 </main>
 </div>
 <script>
@@ -1735,7 +1889,6 @@ function goToStep(step) {
   updateStepIndicator(step);
 }
 </script>
-
 <script>
 function animateStepTransition(step) {
   goToStep(step);
@@ -1747,10 +1900,15 @@ function animateStepTransition(step) {
 }
 
 // Contador animado para el resumen
+
 function animateCount(id, end) {
   const el = document.getElementById(id);
   let start = 0;
   const duration = 600;
+  if (end === 0) {
+    el.textContent = "0";
+    return;
+  }
   const stepTime = Math.max(Math.floor(duration / end), 20);
   const timer = setInterval(() => {
     start++;
@@ -1760,6 +1918,47 @@ function animateCount(id, end) {
 }
 
 
-</script>
 
+</script>
+<script>
+function applyHighlight(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('animate');
+  setTimeout(() => el.classList.remove('animate'), 600);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const originalUpdateDisplay = window.updateDisplay;
+  if (typeof originalUpdateDisplay === 'function') {
+    window.updateDisplay = function() {
+      originalUpdateDisplay();
+      applyHighlight('cargadasCount');
+      applyHighlight('vaciasCount');
+      applyHighlight('averiadasCount');
+      applyHighlight('totalCount');
+    };
+  }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const greetingEl = document.getElementById('greeting');
+  if (!greetingEl) return;
+
+  const now = new Date();
+  const hour = now.getHours();
+  let saludo = '';
+
+  if (hour >= 5 && hour < 12) {
+    saludo = 'Buenos días 👋';
+  } else if (hour >= 12 && hour < 20) {
+    saludo = 'Buenas tardes 🌞';
+  } else {
+    saludo = 'Buenas noches 🌙';
+  }
+
+  greetingEl.textContent = saludo;
+});
+</script>
 </body>
