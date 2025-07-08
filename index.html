@@ -1375,7 +1375,14 @@ input:focus, textarea:focus {
 </main>
 </div>
 <script>
-        let plataformas = [];
+        
+window.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  updateDisplay();
+  updateDate();
+});
+
+let plataformas = [];
         let currentStep = 1;
         let currentMatricula = '';
         let currentEstado = '';
