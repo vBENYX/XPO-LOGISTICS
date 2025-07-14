@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-
-<html lang="es">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>Xpo Logistics - Registro de Plataformas</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
 window.addEventListener('DOMContentLoaded', () => {
@@ -62,6 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     greetingEl.textContent = "Buenas noches 🌙";
   }
+});
+
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        saveData(); // Guarda antes de que la pestaña se oculte
+    }
+});
+
+
+window.addEventListener('beforeunload', (event) => {
+    saveData(); // Guarda antes de cerrar o recargar
 });
 
 </script>
@@ -1277,12 +1286,12 @@ input:focus, textarea:focus {
   pointer-events: none;
 }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&amp;display=swap" rel="stylesheet"/></head>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&amp;display=swap" rel="stylesheet"></head>
 <body>
 <div class="welcome-overlay" id="welcome-overlay">
 <div class="welcome-box">
 <div class="logo-animation">CODE</div>
-<h2 id="greeting"></h2>
+<h2 id="greeting">Buenos días 👋</h2>
 <p>Bienvenido al sistema de registro de plataformas</p>
 </div>
 </div>
@@ -1293,24 +1302,24 @@ input:focus, textarea:focus {
 <span class="xpo">Xpo</span> <span class="logistics">Logistics</span>
 </div>
 <h1>Registro de Plataformas</h1>
-<p class="date" id="currentDate"></p>
+
 </header>
 <main class="main">
 <section class="form-section fade-in">
 <div class="form-container">
 <div class="progress-indicator">
-<div class="progress-step" id="stepCircle1"></div>
+<div class="progress-step active" id="stepCircle1"></div>
 <div class="progress-step" id="stepCircle2"></div>
 <div class="progress-step" id="stepCircle3"></div>
 </div>
-<div class="form fade-in-up" id="step1">
+<div class="form fade-in-up fade-step" id="step1">
 <h2>Paso 1: Matrícula de la Plataforma</h2>
-<input autocomplete="off" class="input" id="matriculaInput" placeholder="Introduce la matrícula" type="text"/>
+<input autocomplete="off" class="input" id="matriculaInput" placeholder="Introduce la matrícula" type="text">
 <button class="btn btn-resumen btn-modern btn-primary" onclick="nextStep()">Continuar</button>
 </div>
-<div class="form hidden fade-in-up" id="step2">
+<div class="form fade-in-up fade-step hidden" id="step2">
 <h2>Paso 2: Estado de la Plataforma</h2>
-<p class="matricula-display">Matrícula: <strong id="matriculaDisplay"></strong></p>
+<p class="matricula-display">Matrícula: <strong id="matriculaDisplay">BSBSB</strong></p>
 <div class="estado-buttons">
 <button class="btn btn-resumen btn-modern btn-cargada" onclick="selectEstado('CARGADA')"> CARGADA</button>
 <button class="btn btn-resumen btn-modern btn-vacia" onclick="selectEstado('VACÍA')"> VACÍA</button>
@@ -1318,12 +1327,12 @@ input:focus, textarea:focus {
 </div>
 <button class="btn btn-resumen btn-modern btn-secondary" onclick="resetForm()">Volver</button>
 </div>
-<div class="form hidden fade-in-up" id="step3">
+<div class="form fade-in-up fade-step hidden" id="step3">
 <h2>Paso 3: Contenido de la Plataforma</h2>
-<p class="matricula-display">Matrícula: <strong id="matriculaDisplay2"></strong> - Estado: <strong id="estadoDisplay"></strong></p>
+<p class="matricula-display">Matrícula: <strong id="matriculaDisplay2">BSBSB</strong> - Estado: <strong id="estadoDisplay">CARGADA</strong></p>
 <textarea class="textarea" id="contenidoInput" placeholder="Describe qué contiene la plataforma o el problema..." rows="4"></textarea>
 <div class="form-buttons">
-<button class="btn btn-resumen btn-modern btn-primary" onclick="registrarPlataforma()">Registrar</button>
+<button class="btn btn-resumen btn-modern btn-primary" onclick="registrarPlataforma()" style="">Registrar</button>
 <button class="btn btn-resumen btn-modern btn-secondary" onclick="goToStep(2)">Volver</button>
 </div>
 </div>
@@ -1333,32 +1342,26 @@ input:focus, textarea:focus {
 <div class="summary">
 <h3>Resumen del día</h3>
 <div class="summary-stats">
-<div class="stat"><span class="stat-number" id="cargadasCount">0</span><span class="stat-label"> Plataformas cargadas</span></div>
+<div class="stat"><span class="stat-number" id="cargadasCount">1</span><span class="stat-label"> Plataformas cargadas</span></div>
 <div class="stat"><span class="stat-number" id="vaciasCount">0</span><span class="stat-label"> Plataformas vacías</span></div>
 <div class="stat"><span class="stat-number" id="averiadasCount">0</span><span class="stat-label">🛠 Averíadas</span></div>
-<div class="stat"><span class="stat-number" id="totalCount">0</span><span class="stat-label">Total</span></div>
+<div class="stat"><span class="stat-number" id="totalCount">1</span><span class="stat-label">Total</span></div>
 </div>
 </div>
 </section>
 <section class="lists-section fade-in">
 <div class="lists-container">
 <div class="list">
-<h3>Plataformas cargadas (<span id="cargadasListCount">0</span>)</h3>
-<div class="platforms-list" id="cargadasList">
-<div class="empty-message">No hay plataformas cargadas registradas</div>
-</div>
+<h3>Plataformas cargadas (<span id="cargadasListCount">1</span>)</h3>
+<div class="platforms-list" id="cargadasList"><div class="platform-card cargada"><div class="platform-header"><span class="platform-matricula">BSBSB</span><span class="platform-time">10:17:26</span></div><div class="platform-content">Bdbsb</div></div></div>
 </div>
 <div class="list">
 <h3>Plataformas vacías (<span id="vaciasListCount">0</span>)</h3>
-<div class="platforms-list" id="vaciasList">
-<div class="empty-message">No hay plataformas vacías registradas</div>
-</div>
+<div class="platforms-list" id="vaciasList"><div class="empty-message">No hay plataformas vacías registradas</div></div>
 </div>
 <div class="list">
 <h3>🛠 Plataformas averiadas (<span id="averiadasListCount">0</span>)</h3>
-<div class="platforms-list" id="averiadasList">
-<div class="empty-message">No hay plataformas averíadas registradas</div>
-</div>
+<div class="platforms-list" id="averiadasList"><div class="empty-message">No hay plataformas averíadas registradas</div></div>
 </div>
 </div>
 </section>
@@ -1369,7 +1372,7 @@ input:focus, textarea:focus {
 </div>
 </section>
 <button class="floating-btn" onclick="generatePDF()" title="Generar PDF">
-<svg fill="white" height="16" viewbox="0 0 16 16" width="16"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5L9.5 0H4zm5 1.5L13.5 6H10a1 1 0 0 1-1-1V1.5zM4 15a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4v4a2 2 0 0 0 2 2h4v7a1 1 0 0 1-1 1H4z"></path></svg>
+<svg fill="white" height="16" viewBox="0 0 16 16" width="16"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5L9.5 0H4zm5 1.5L13.5 6H10a1 1 0 0 1-1-1V1.5zM4 15a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4v4a2 2 0 0 0 2 2h4v7a1 1 0 0 1-1 1H4z"></path></svg>
 <span>PDF</span>
 </button>
 </main>
@@ -1398,8 +1401,7 @@ let plataformas = [];
             document.getElementById('currentDate').textContent = dateString;
         }
         function getStorageKey() {
-            const today = new Date().toDateString();
-            return 'plataformas-' + today;
+            return 'plataformas-global';
         }
         function loadData() {
             const savedData = localStorage.getItem(getStorageKey());
@@ -1869,12 +1871,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        saveData(); // Guarda antes de que la pestaña se oculte
+    }
+});
+
+
+window.addEventListener('beforeunload', (event) => {
+    saveData(); // Guarda antes de cerrar o recargar
+});
+
 </script>
-<div class="welcome-container fade-in" id="welcome-message">
-<div class="logo-animation">CODE</div>
-<h2 id="greeting"></h2>
-<p>Bienvenido al sistema de registro de plataformas.</p>
-</div>
+
 <script>
 function updateStepIndicator(step) {
   for (let i = 1; i <= 3; i++) {
@@ -1895,6 +1905,18 @@ function goToStep(step) {
   currentStep = step;
   updateStepIndicator(step);
 }
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        saveData(); // Guarda antes de que la pestaña se oculte
+    }
+});
+
+
+window.addEventListener('beforeunload', (event) => {
+    saveData(); // Guarda antes de cerrar o recargar
+});
+
 </script>
 <script>
 function animateStepTransition(step) {
@@ -1926,6 +1948,18 @@ function animateCount(id, end) {
 
 
 
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        saveData(); // Guarda antes de que la pestaña se oculte
+    }
+});
+
+
+window.addEventListener('beforeunload', (event) => {
+    saveData(); // Guarda antes de cerrar o recargar
+});
+
 </script>
 <script>
 function applyHighlight(id) {
@@ -1947,6 +1981,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 });
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        saveData(); // Guarda antes de que la pestaña se oculte
+    }
+});
+
+
+window.addEventListener('beforeunload', (event) => {
+    saveData(); // Guarda antes de cerrar o recargar
+});
+
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -1967,5 +2013,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   greetingEl.textContent = saludo;
 });
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        saveData(); // Guarda antes de que la pestaña se oculte
+    }
+});
+
+
+window.addEventListener('beforeunload', (event) => {
+    saveData(); // Guarda antes de cerrar o recargar
+});
+
 </script>
-</body>
+
+
+</body></html>
