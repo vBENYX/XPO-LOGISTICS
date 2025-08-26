@@ -1,6 +1,6 @@
 <html lang="es"><head>
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" name="viewport">
 <title>Xpo Logistics - Registro de Plataformas</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
 window.addEventListener('DOMContentLoaded', () => {
@@ -1561,36 +1561,40 @@ function goToStep(step) {
 
             let yPosition = 25;
 
-            // Header del PDF
-            doc.setFillColor(37, 99, 235);
-            doc.rect(0, 0, 210, 45, 'F');
-
-            // Logo CODE
+            
+            
+            // Header del PDF estilo Apple card
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(10, 8, 190, 45, 6, 6, 'F'); // tarjeta blanca con más altura
+            doc.setDrawColor(220, 220, 220);
+            doc.roundedRect(10, 8, 190, 45, 6, 6); // borde gris claro
             doc.setFont('helvetica', 'bold');
-            doc.setFontSize(24);
-            doc.setTextColor(251, 191, 36);
-            doc.text('CODE', 105, 20, { align: 'center' });
 
-            // Logo Xpo Logistics
+            // CODE (arriba derecha, pequeño)
+            doc.setFontSize(10);
+            doc.setTextColor(30, 30, 30);
+            doc.text('CODE', 195, 15, { align: 'right' });
+
+            // Logo XPO Logistics (centrado)
             doc.setFontSize(20);
-            doc.setTextColor(255, 255, 255);
-            doc.text('XPO', 85, 32);
-            doc.setTextColor(239, 68, 68);
-            doc.text('LOGISTICS', 105, 32);
+            doc.setTextColor(239, 68, 68); // rojo para Xpo
+            doc.text('XPO', 105, 25, { align: 'center' });
+            doc.setTextColor(0, 0, 0); // negro para Logistics
+            doc.text('LOGISTICS', 105, 35, { align: 'center' });
 
-            // Título y fecha
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-            doc.text('REPORTE DIARIO DE PLATAFORMAS', 105, 40, { align: 'center' });
-
-            // Fecha
-            doc.setFont('helvetica', 'normal');
+            // Título dentro de la tarjeta
             doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            doc.text(dateString, 105, 55, { align: 'center' });
+            doc.setTextColor(17, 24, 39);
+            doc.text('REPORTE DIARIO DE PLATAFORMAS', 105, 43, { align: 'center' });
 
-            yPosition = 70;
+            // Fecha dentro de la tarjeta
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.setTextColor(75, 85, 99);
+            doc.text(dateString, 105, 50, { align: 'center' });
+
+            yPosition = 65; // Ajustamos el inicio del contenido debajo de la tarjeta
+
 
             // Función para crear columnas lado a lado
             function createTwoColumnTables(leftTitle, leftData, rightTitle, rightData, startY) {
@@ -2027,5 +2031,3 @@ window.addEventListener('beforeunload', (event) => {
 
 </script>
 
-
-</body></html>
