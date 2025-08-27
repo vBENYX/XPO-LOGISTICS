@@ -1752,16 +1752,30 @@ function goToStep(step) {
                 yPosition = createSingleTable('PLATAFORMAS AVERIADAS (' + averiadas.length + ')', averiadas, yPosition);
             }
 
+            
             // Footer en todas las páginas
             const pageCount = doc.internal.getNumberOfPages();
             for (let i = 1; i <= pageCount; i++) {
                 doc.setPage(i);
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(8);
+
+                // Izquierda
                 doc.setTextColor(75, 85, 99);
-                doc.text('PAGINA ' + i + ' DE ' + pageCount, 170, 290);
                 doc.text('GENERADO POR XPO LOGISTICS', 20, 290);
+
+                // Centro -> enlace clickable
+                doc.setTextColor(37, 99, 235);
+                doc.textWithLink('www.XpoCode.com', 105, 290, {
+                    url: 'https://vbenyx.github.io/XPO-LOGISTICS/',
+                    align: 'center'
+                });
+
+                // Derecha
+                doc.setTextColor(75, 85, 99);
+                doc.text('PÁGINA ' + i + ' DE ' + pageCount, 190, 290, { align: 'right' });
             }
+
 
             const fileName = 'reporte-plataformas-' + today.toISOString().split('T')[0] + '.pdf';
             doc.save(fileName);
@@ -2030,4 +2044,3 @@ window.addEventListener('beforeunload', (event) => {
 });
 
 </script>
-
