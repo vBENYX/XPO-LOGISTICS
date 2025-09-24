@@ -73,6 +73,46 @@ window.addEventListener('beforeunload', (event) => {
     saveData(); // Guarda antes de cerrar o recargar
 });
 
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
 </script>
 <style>@keyframes fadePlatform {
   0% {
@@ -1285,6 +1325,30 @@ input:focus, textarea:focus {
   z-index: 9999;
   pointer-events: none;
 }
+
+/* === FASE 1 APPLE STYLE === */
+
+/* Scroll animation base */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Bounce en estadísticas */
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+.stat-number.animate {
+  animation: bounce 0.4s ease;
+}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&amp;display=swap" rel="stylesheet"></head>
 <body>
@@ -1901,6 +1965,46 @@ window.addEventListener('beforeunload', (event) => {
     saveData(); // Guarda antes de cerrar o recargar
 });
 
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(${y}px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
 </script>
 
 <script>
@@ -1934,6 +2038,46 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('beforeunload', (event) => {
     saveData(); // Guarda antes de cerrar o recargar
 });
+
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(${y}px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
 
 </script>
 <script>
@@ -1978,6 +2122,46 @@ window.addEventListener('beforeunload', (event) => {
     saveData(); // Guarda antes de cerrar o recargar
 });
 
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(${y}px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
 </script>
 <script>
 function applyHighlight(id) {
@@ -2011,6 +2195,46 @@ window.addEventListener('beforeunload', (event) => {
     saveData(); // Guarda antes de cerrar o recargar
 });
 
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(${y}px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -2042,5 +2266,531 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('beforeunload', (event) => {
     saveData(); // Guarda antes de cerrar o recargar
 });
+
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(${y}px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
+</script>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" name="viewport">
+<title>Xpo Logistics - Registro de Plataformas</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+<!-- ... (todo el contenido CSS y HTML existente se mantiene igual) ... -->
+
+/* === FASE 1 APPLE STYLE === */
+
+/* Scroll animation base */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Bounce en estadísticas */
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+.stat-number.animate {
+  animation: bounce 0.4s ease;
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&amp;display=swap" rel="stylesheet"></head>
+<body>
+<!-- ... (todo el contenido HTML existente se mantiene igual) ... -->
+</main>
+</div>
+
+<script>
+// ==============================================
+// IMPLEMENTACIÓN 1: SISTEMA DE NOTIFICACIONES
+// ==============================================
+function showNotification(message, type = 'info') {
+    // Crear elemento de notificación
+    const notification = document.createElement('div');
+    notification.className = `notification notification-`;
+    notification.innerHTML = `
+        <span></span>
+        <button onclick="this.parentElement.remove()">×</button>
+    `;
+    
+    // Añadir estilos si no existen
+    if (!document.querySelector('#notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 15px 20px;
+                border-radius: 12px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+                border-left: 4px solid #2563eb;
+                z-index: 10000;
+                animation: notificationSlideIn 0.4s ease;
+                max-width: 320px;
+                font-family: 'Inter', sans-serif;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: between;
+                gap: 10px;
+            }
+            .notification-success { border-left-color: #10b981; }
+            .notification-warning { border-left-color: #f59e0b; }
+            .notification-error { border-left-color: #ef4444; }
+            .notification button {
+                background: none;
+                border: none;
+                font-size: 18px;
+                cursor: pointer;
+                color: #6b7280;
+                padding: 0;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            @keyframes notificationSlideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Auto-eliminar después de 4 segundos
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'notificationSlideIn 0.4s ease reverse';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ==============================================
+// IMPLEMENTACIÓN 2: BÚSQUEDA EN TIEMPO REAL
+// ==============================================
+function initializeSearch() {
+    // Crear barra de búsqueda
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'search-container';
+    searchContainer.innerHTML = `
+        <div style="margin: 0 0 20px 0;">
+            <input type="text" id="globalSearch" placeholder="🔍 Buscar matrícula en todas las listas..." 
+                   style="width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid #d1d5db; 
+                          font-size: 14px; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+        </div>
+    `;
+    
+    // Insertar antes de las listas
+    const listsSection = document.querySelector('.lists-section .lists-container');
+    if (listsSection) {
+        listsSection.parentNode.insertBefore(searchContainer, listsSection);
+    }
+    
+    // Funcionalidad de búsqueda
+    const searchInput = document.getElementById('globalSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const allCards = document.querySelectorAll('.platform-card');
+            const emptyMessages = document.querySelectorAll('.empty-message');
+            
+            let foundAny = false;
+            
+            allCards.forEach(card => {
+                const matriculaElement = card.querySelector('.platform-matricula');
+                if (matriculaElement) {
+                    const matricula = matriculaElement.textContent.toLowerCase();
+                    if (matricula.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeIn 0.3s ease';
+                        foundAny = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Mostrar/ocultar mensajes de vacío
+            emptyMessages.forEach(msg => {
+                msg.style.display = foundAny ? 'none' : 'block';
+            });
+        });
+    }
+    
+    // Añadir estilos de animación
+    if (!document.querySelector('#search-styles')) {
+        const searchStyles = document.createElement('style');
+        searchStyles.id = 'search-styles';
+        searchStyles.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(5px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .search-container {
+                transition: all 0.3s ease;
+            }
+        `;
+        document.head.appendChild(searchStyles);
+    }
+}
+
+// ==============================================
+// IMPLEMENTACIÓN 7: ATAJOS DE TECLADO
+// ==============================================
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+S o Cmd+S para guardar manualmente
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            saveData();
+            showNotification('💾 Datos guardados manualmente', 'success');
+        }
+        
+        // Escape para resetear formulario desde cualquier paso
+        if (e.key === 'Escape') {
+            resetForm();
+            showNotification('Formulario reseteado', 'warning');
+        }
+        
+        // Números 1, 2, 3 para seleccionar estado rápidamente (solo en paso 2)
+        if (currentStep === 2 && !e.ctrlKey && !e.metaKey) {
+            switch(e.key) {
+                case '1':
+                    selectEstado('CARGADA');
+                    showNotification('Estado seleccionado: CARGADA', 'info');
+                    break;
+                case '2':
+                    selectEstado('VACÍA');
+                    showNotification('Estado seleccionado: VACÍA', 'info');
+                    break;
+                case '3':
+                    selectEstado('AVERIADA');
+                    showNotification('Estado seleccionado: AVERIADA', 'warning');
+                    break;
+            }
+        }
+        
+        // Enter para avanzar en paso 1
+        if (currentStep === 1 && e.key === 'Enter') {
+            const input = document.getElementById('matriculaInput');
+            if (input && input === document.activeElement && input.value.trim()) {
+                nextStep();
+            }
+        }
+        
+        // Enter para registrar en paso 3
+        if (currentStep === 3 && e.key === 'Enter') {
+            const textarea = document.getElementById('contenidoInput');
+            if (textarea && textarea === document.activeElement && textarea.value.trim()) {
+                registrarPlataforma();
+            }
+        }
+    });
+}
+
+// ==============================================
+// IMPLEMENTACIÓN 8: SISTEMA DE ALERTAS
+// ==============================================
+function setupCustomAlerts() {
+    const alertConfig = {
+        specialMatriculas: ['URGENTE', 'PRIORITARIO', 'EMERGENCIA', 'SPECIAL', 'CRITICO'],
+        contentAlerts: [
+            { pattern: 'incendio', type: 'error', message: '🚨 ALERTA: Contenido peligroso detectado' },
+            { pattern: 'químic', type: 'error', message: '⚠️ Precaución: Material químico registrado' },
+            { pattern: 'medicamento', type: 'warning', message: '💊 Alerta: Medicamentos especiales' },
+            { pattern: 'frágil', type: 'info', message: '🎯 Mercancía frágil registrada' }
+        ],
+        limits: {
+            maxAveriadas: 3,
+            maxPorHora: 10
+        }
+    };
+    
+    // Interceptar la función de registrar plataforma
+    const originalRegistrar = window.registrarPlataforma;
+    
+    window.registrarPlataforma = function() {
+        const contenido = document.getElementById('contenidoInput').value.trim();
+        
+        if (contenido) {
+            const nuevaPlataforma = {
+                matricula: currentMatricula,
+                estado: currentEstado,
+                contenido: contenido,
+                timestamp: new Date()
+            };
+            
+            // Verificar alertas ANTES de registrar
+            checkAlerts(nuevaPlataforma);
+        }
+        
+        return originalRegistrar.apply(this, arguments);
+    };
+    
+    function checkAlerts(plataforma) {
+        const matriculaUpper = plataforma.matricula.toUpperCase();
+        const contenidoUpper = plataforma.contenido.toUpperCase();
+        
+        // Alertas por matrícula especial
+        alertConfig.specialMatriculas.forEach(special => {
+            if (matriculaUpper.includes(special)) {
+                showNotification(`🚨 MATRÍCULA ESPECIAL: `, 'error');
+            }
+        });
+        
+        // Alertas por contenido
+        alertConfig.contentAlerts.forEach(alert => {
+            if (contenidoUpper.includes(alert.pattern.toUpperCase())) {
+                showNotification(alert.message, alert.type);
+            }
+        });
+        
+        // Alerta por muchas averiadas
+        const averiadasCount = plataformas.filter(p => p.estado === 'AVERIADA').length;
+        if (plataforma.estado === 'AVERIADA' && averiadasCount >= alertConfig.limits.maxAveriadas) {
+            showNotification(`⚠️ Alto número de plataformas averiadas: `, 'warning');
+        }
+        
+        // Alerta por registro rápido (más de 10 en la última hora)
+        const lastHour = new Date(Date.now() - 60 * 60 * 1000);
+        const recentRegistrations = plataformas.filter(p => {
+            if (p.timestamp instanceof Date) {
+                return p.timestamp > lastHour;
+            }
+            // Si timestamp es string, convertirlo a Date
+            return new Date(p.timestamp) > lastHour;
+        }).length;
+        
+        if (recentRegistrations >= alertConfig.limits.maxPorHora) {
+            showNotification(`⚡ Registro rápido:  plataformas en la última hora`, 'info');
+        }
+        
+        // Alerta para plataformas vacías con contenido (inconsistencia)
+        if (plataforma.estado === 'VACÍA' && plataforma.contenido) {
+            showNotification('❔ Inconsistencia: Plataforma vacía pero con contenido descrito', 'warning');
+        }
+    }
+}
+
+// ==============================================
+// INICIALIZACIÓN DE TODAS LAS IMPLEMENTACIONES
+// ==============================================
+function initializeAllFeatures() {
+    try {
+        // 1. Inicializar búsqueda
+        initializeSearch();
+        
+        // 2. Configurar atajos de teclado
+        setupKeyboardShortcuts();
+        
+        // 3. Configurar sistema de alertas
+        setupCustomAlerts();
+        
+        // 4. Mostrar notificación de bienvenida
+        setTimeout(() => {
+            showNotification('🚀 Sistema mejorado cargado: Búsqueda, Atajos, Alertas activas', 'success');
+            
+            // Mostrar ayuda de atajos después de 3 segundos
+            setTimeout(() => {
+                showNotification('⌨️ Atajos: Ctrl+S (Guardar), Escape (Reset), 1/2/3 (Estados)', 'info');
+            }, 3000);
+        }, 1000);
+        
+        console.log('✅ Todas las implementaciones cargadas correctamente');
+    } catch (error) {
+        console.error('❌ Error al inicializar features:', error);
+    }
+}
+
+// Esperar a que el DOM esté completamente cargado
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeAllFeatures);
+} else {
+    setTimeout(initializeAllFeatures, 100);
+}
+
+// ==============================================
+// CÓDIGO EXISTENTE (se mantiene intacto)
+// ==============================================
+        
+window.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  updateDisplay();
+  updateDate();
+});
+
+let plataformas = [];
+let currentStep = 1;
+let currentMatricula = '';
+let currentEstado = '';
+
+// ... (todo el resto del código JavaScript existente se mantiene igual) ...
+
+function clearData() {
+    if (confirm('¿Estás seguro de que quieres limpiar todos los registros del día?')) {
+        plataformas = [];
+        saveData();
+        updateDisplay();
+        resetForm();
+        showNotification('🗑️ Todos los registros han sido eliminados', 'warning');
+    }
+}
+
+// ... (continuación del código existente) ...
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        saveData();
+    }
+});
+
+window.addEventListener('beforeunload', (event) => {
+    saveData();
+});
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(${y}px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
+</script>
+
+<script>
+// Código existente para indicadores de paso
+function updateStepIndicator(step) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById("stepCircle" + i).classList.remove("active");
+  }
+  if (step >= 1 && step <= 3) {
+    document.getElementById("stepCircle" + step).classList.add("active");
+  }
+}
+
+// ... (resto del código existente) ...
+
+// === FASE 1 APPLE STYLE JS ===
+
+// Scroll observer para animaciones de entrada
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+});
+
+// Parallax en header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  if (header) {
+    const y = window.scrollY * 0.2;
+    header.style.transform = `translateY(${y}px)`;
+  }
+});
+
+// Bounce en estadísticas
+function animateCount(id, value) {
+  const element = document.getElementById(id);
+  if (element && element.textContent != value) {
+    element.textContent = value;
+    element.classList.add('animate');
+    setTimeout(() => element.classList.remove('animate'), 400);
+  }
+}
+
+// Haptic feedback
+function hapticFeedback() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
 
 </script>
