@@ -1488,39 +1488,59 @@ let plataformas = [];
             }
         }
         function selectEstado(estado) {
-            currentEstado = estado;
-            document.getElementById('estadoDisplay').textContent = estado;
-            
-            if (estado === 'VACÍA') {
-                const nuevaPlataforma = {
-                    id: Date.now(),
-                    matricula: currentMatricula,
-                    estado: estado,
-                    contenido: '',
-                    timestamp: new Date().toLocaleTimeString('es-ES')
-                };
-                plataformas.push(nuevaPlataforma);
-                saveData();
-                updateDisplay();
-                const btn = document.querySelector('#step3 button.btn-primary');
-                btn.innerHTML = '<span class="spinner"></span> Registrando...';
-                btn.disabled = true;
+    currentEstado = estado;
+    const estadoEl = document.getElementById('estadoDisplay');
+    if (estadoEl) estadoEl.textContent = estado;
 
+    if (estado === 'VACÍA') {
+        // Evitar duplicados y validar matrícula
+        if (!currentMatricula || !currentMatricula.trim()) {
+            alert('Introduce primero una matrícula válida');
+            resetForm();
+            return;
+        }
+        const existe = plataformas.some(p => p.matricula === currentMatricula && p.estado === 'VACÍA');
+        if (existe) {
+            alert('⚠️ Esta matrícula ya fue registrada como VACÍA.');
+            resetForm();
+            return;
+        }
+
+        const nuevaPlataforma = {
+            id: Date.now(),
+            matricula: currentMatricula,
+            estado: estado,
+            contenido: '',
+            timestamp: new Date().toLocaleTimeString('es-ES')
+        };
+        plataformas.push(nuevaPlataforma);
+        try { saveData(); } catch(e){ console.warn('saveData falló', e); }
+        try { updateDisplay(); } catch(e){ console.warn('updateDisplay falló', e); }
+
+        // Feedback visual en botón Registrar si existe
+        const btn = document.querySelector('#step3 button.btn-primary');
+        if (btn) {
+            const oldHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Registrando...';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = '<svg class="check-icon" viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6" /></svg> Registrado';
+                btn.style.backgroundColor = "#22c55e";
                 setTimeout(() => {
-                  btn.innerHTML = '<svg class="check-icon" viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6" /></svg> Registrado';
-                  btn.style.backgroundColor = "#22c55e";
-
-                  setTimeout(() => {
-                    btn.innerHTML = 'Registrar';
+                    btn.innerHTML = oldHTML || 'Registrar';
                     btn.style.backgroundColor = "";
                     btn.disabled = false;
                     resetForm();
-                  }, 1200);
-                }, 500);
-            } else {
-                animateStepTransition(3);
-            }
+                }, 900);
+            }, 400);
+        } else {
+            resetForm();
         }
+    } else {
+        // Para CARGADA o AVERIADA, pasa al paso 3 para añadir contenido
+        try { animateStepTransition(3); } catch(e){ goToStep(3); }
+    }
+}
         function registrarPlataforma() {
             const contenido = document.getElementById('contenidoInput').value.trim();
             if (contenido) {
@@ -1663,7 +1683,25 @@ function generatePDF() {
     doc.setTextColor(120,120,130);
     doc.text(dateString, 105, 28, { align: 'center' });
 
-    // ==== BADGES ====
+    // ==== CARDS (reemplazo de badges) ====
+function drawCard(x, y, w, h, title, value, bgColor, textColor) {
+    // fondo con borde ligero
+    doc.setFillColor(...bgColor);
+    doc.roundedRect(x, y, w, h, 3, 3, 'F');
+    doc.setDrawColor(210,210,210);
+    doc.roundedRect(x, y, w, h, 3, 3);
+    // título (pequeño)
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(80,80,90);
+    doc.text(title, x + w/2, y + 5, { align: 'center' });
+    // valor grande
+    doc.setFontSize(12);
+    doc.setTextColor(...textColor);
+    doc.text(String(value), x + w/2, y + h - 5, { align: 'center' });
+}
+
+// ==== BADGES ====
     const badgeY = 32;
     const badgeWidth = 40;
     const badgeHeight = 8;
@@ -1671,7 +1709,7 @@ function generatePDF() {
     const totalWidth = badgeWidth*3 + gap*2;
     let bx = 105 - totalWidth/2;
 
-    function drawBadge(x,y,w,h,bg,num,label,numColor){
+    function drawCard(x,y,w,h,bg,num,label,numColor){
         doc.setFillColor(...bg);
         doc.roundedRect(x,y,w,h,2,2,'F');
         doc.setFont('helvetica','bold');
@@ -1684,11 +1722,11 @@ function generatePDF() {
         doc.text(label, x+w*0.7, y+h/2+2, { align: 'center' });
     }
 
-    drawBadge(bx,badgeY,badgeWidth,badgeHeight,[254,226,226],cargadas.length,'CARGADAS',[180,30,50]);
+    drawCard(bx,badgeY,badgeWidth,badgeHeight,[254,226,226],cargadas.length,'CARGADAS',[180,30,50]);
     bx+=badgeWidth+gap;
-    drawBadge(bx,badgeY,badgeWidth,badgeHeight,[237,249,237],vacias.length,'VACÍAS',[16,185,129]);
+    drawCard(bx,badgeY,badgeWidth,badgeHeight,[237,249,237],vacias.length,'VACÍAS',[16,185,129]);
     bx+=badgeWidth+gap;
-    drawBadge(bx,badgeY,badgeWidth,badgeHeight,[255,245,230],averiadas.length,'AVERIADAS',[200,110,20]);
+    drawCard(bx,badgeY,badgeWidth,badgeHeight,[255,245,230],averiadas.length,'AVERIADAS',[200,110,20]);
 
     let yPosition = 52; // más abajo para no invadir header
 
@@ -1709,7 +1747,7 @@ function generatePDF() {
         currentY+=8;
 
         if(leftData.length>0){
-            doc.setFillColor(230,230,230);
+            doc.setFillColor(245,247,250);
             doc.rect(leftX,currentY-4,columnWidth,7,'F');
             doc.setFont('helvetica','bold');
             doc.setFontSize(9);
@@ -1717,7 +1755,7 @@ function generatePDF() {
             doc.text('CONTENIDO',leftX+35,currentY);
         }
         if(rightData.length>0){
-            doc.setFillColor(230,230,230);
+            doc.setFillColor(245,247,250);
             doc.rect(rightX,currentY-4,columnWidth,7,'F');
             doc.setFont('helvetica','bold');
             doc.setFontSize(9);
@@ -1731,8 +1769,8 @@ function generatePDF() {
         const maxRows=Math.max(leftData.length,rightData.length);
         for(let i=0;i<maxRows;i++){
             if(i%2===0){
-                if(leftData[i]){doc.setFillColor(249,250,251);doc.rect(leftX,currentY-3,columnWidth,6,'F');}
-                if(rightData[i]){doc.setFillColor(249,250,251);doc.rect(rightX,currentY-3,columnWidth,6,'F');}
+                if(leftData[i]){doc.setFillColor(252,253,255);doc.rect(leftX,currentY-3,columnWidth,6,'F');}
+                if(rightData[i]){doc.setFillColor(252,253,255);doc.rect(rightX,currentY-3,columnWidth,6,'F');}
             }
             if(leftData[i]){
                 doc.text(leftData[i].matricula.toUpperCase(),leftX+2,currentY);
@@ -1764,7 +1802,7 @@ function generatePDF() {
         doc.text(title.toUpperCase(),15,currentY);
         currentY+=8;
 
-        doc.setFillColor(230,230,230);
+        doc.setFillColor(245,247,250);
         doc.rect(15,currentY-4,180,7,'F');
         doc.setFont('helvetica','bold');
         doc.setFontSize(9);
@@ -1775,7 +1813,7 @@ function generatePDF() {
         doc.setFont('helvetica','normal');
         doc.setFontSize(8);
         data.forEach((platform,index)=>{
-            if(index%2===0){doc.setFillColor(249,250,251);doc.rect(15,currentY-3,180,6,'F');}
+            if(index%2===0){doc.setFillColor(252,253,255);doc.rect(15,currentY-3,180,6,'F');}
             doc.text(platform.matricula.toUpperCase(),17,currentY);
             if(platform.contenido){
                 const lines=doc.splitTextToSize(platform.contenido.toUpperCase(),120);
@@ -1813,15 +1851,19 @@ function generatePDF() {
         doc.setTextColor(100,100,110);
         doc.text('© 2025 XPO LOGISTICS – Informe interno',20,285);
         doc.setTextColor(60,90,180);
-        doc.setTextColor(37, 99, 235);
-        doc.textWithLink('AppCode.com', 105, 290, {
-        url: 'https://vbenyx.github.io/XPO-LOGISTICS/',
-        align: 'center'});
+        doc.textWithLink('https://vbenyx.github.io/XPO-LOGISTICS/', 105, 285, { url: 'https://vbenyx.github.io/XPO-LOGISTICS/', align: 'center' });
         doc.setTextColor(100,100,110);
         doc.text('Página '+i+' de '+pageCount,190,285,{align:'right'});
     }
 
-    doc.save('reporte_plataformas.pdf');
+    
+    const exportDateForName = new Date().toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    }).replace(/\//g, '-');
+    doc.save(`reporte_plataformas_${exportDateForName}.pdf`);
+    
 }
 
 
@@ -2778,5 +2820,3 @@ function animateCount(id, value) {
 function hapticFeedback() {
   if (navigator.vibrate) navigator.vibrate(50);
 }
-
-</script>
