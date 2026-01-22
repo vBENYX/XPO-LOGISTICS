@@ -3413,30 +3413,51 @@ setTimeout(animateCounters, 900);
 
   async function recognizeOnce(){
     if(!scanning) return '';
-    // Create small canvas frame for faster OCR
     const canvas = document.createElement('canvas');
     const w = video.videoWidth || 1280;
     const h = video.videoHeight || 720;
     if(!w || !h) return '';
-    // crop center area (plate likely)
-    const cropW = Math.round(w * 0.80);
-    const cropH = Math.round(h * 0.45);
+
+    // Crop center band (plates usually here)
+    const cropW = Math.round(w * 0.86);
+    const cropH = Math.round(h * 0.52);
     const sx = Math.round((w - cropW)/2);
     const sy = Math.round((h - cropH)/2);
 
-    canvas.width = 960;
-    canvas.height = Math.round(960 * (cropH/cropW));
-    const ctx = canvas.getContext('2d');
+    canvas.width = 1100;
+    canvas.height = Math.round(1100 * (cropH/cropW));
+    const ctx = canvas.getContext('2d', { willReadFrequently:true });
 
     ctx.drawImage(video, sx, sy, cropW, cropH, 0, 0, canvas.width, canvas.height);
+
+    // --- Preprocess image for better OCR ---
+    try{
+      const img = ctx.getImageData(0,0,canvas.width,canvas.height);
+      const d = img.data;
+
+      // grayscale + contrast boost
+      const contrast = 1.35;
+      const intercept = 128*(1-contrast);
+
+      for(let i=0;i<d.length;i+=4){
+        const r=d[i], g=d[i+1], b=d[i+2];
+        let v = (0.299*r + 0.587*g + 0.114*b);
+        v = v*contrast + intercept;
+        // slight threshold
+        const t = v > 135 ? 255 : 0;
+        d[i]=d[i+1]=d[i+2]=t;
+      }
+      ctx.putImageData(img,0,0);
+    }catch(e){}
 
     try{
       if(!window.Tesseract){
         setStatus('Cargando OCR…', 'warn');
         return '';
       }
-      const res = await window.Tesseract.recognize(canvas, 'eng', {
-        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+      const res = await window.Tesseract.recognize(canvas, 'spa+eng', {
+        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+        user_defined_dpi: '300'
       });
       const text = normalizePlate(res?.data?.text || '');
       return text;
@@ -3463,7 +3484,7 @@ setTimeout(animateCounters, 900);
       setStatus('Detectado: ' + plate, 'ok');
 
       // require stability a couple frames to avoid false positives
-      if(stableHits >= 2){
+      if(stableHits >= 2 || (plate && plate.length>=6 && stableHits>=1)){
         matriculaInput.value = plate;
         // trigger the existing flow to step 2 automatically
         try{
@@ -3480,7 +3501,7 @@ setTimeout(animateCounters, 900);
       }
     }
 
-    ocrTimer = setTimeout(tickOCR, 900);
+    ocrTimer = setTimeout(tickOCR, 650);
   }
 
   btn.addEventListener('click', ()=>{
