@@ -2641,42 +2641,6 @@ setTimeout(animateCounters, 900);
  }
 })();
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script>
-let lprStream=null;
-async function startLPR(){
-  const video=document.getElementById('lprVideo');
-  const stream=await navigator.mediaDevices.getUserMedia({
-    video:{facingMode:'environment', width:{ideal:1280}, height:{ideal:720}}
-  });
-  lprStream=stream;
-  video.srcObject=stream;
-  video.play();
-}
-async function scanPlate(){
-  const video=document.getElementById('lprVideo');
-  const canvas=document.createElement('canvas');
-  canvas.width=video.videoWidth;
-  canvas.height=video.videoHeight;
-  const ctx=canvas.getContext('2d');
-  ctx.filter='grayscale(1) contrast(1.6) brightness(1.2)';
-  ctx.drawImage(video,0,0);
-  const { data:{ text } } = await Tesseract.recognize(canvas,'eng',{
-    tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  });
-  const plate=text.replace(/[^A-Z0-9]/g,'').slice(0,8);
-  if(plate.length>=5){
-    const input=document.querySelector('input[type="text"]');
-    if(input){ input.value=plate; input.dispatchEvent(new Event('input')); }
-    stopLPR();
-  }
-}
-function stopLPR(){
-  if(lprStream){ lprStream.getTracks().forEach(t=>t.stop()); }
-}
-</script>
-
 </body>
 </html>
 <style>
@@ -2814,7 +2778,7 @@ body{
 </style>
 <style>
 @keyframes islandPop {
- 0% { transform: translateX(-50%u) scale(0.85); opacity: 0; }
+ 0% { transform: translateX(-50%) scale(0.85); opacity: 0; }
  50% { transform: translateX(-50%) scale(1.08); opacity: 1; }
  100% { transform: translateX(-50%) scale(1); }
 }
@@ -2822,7 +2786,7 @@ body{
  animation: islandPop .38s cubic-bezier(.25, .75, .35, 1.4) !important;
 }
 </style>
-<style>b
+<style>
 @keyframes islandShrink {
  0% { transform: translateX(-50%) scale(1); opacity: 1; }
  100% { transform: translateX(-50%) scale(0.86); opacity: 0; }
