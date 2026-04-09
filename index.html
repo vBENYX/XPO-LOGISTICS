@@ -1868,56 +1868,6 @@ label, .label, .meta .item{
  font-size:13px !important;
 }
 </style>
-
-<style>
-.donation-floating{
- position:fixed;
- bottom:20px;
- right:20px;
- z-index:9999;
-}
-.donation-btn{
- display:flex;
- align-items:center;
- gap:8px;
- padding:12px 16px;
- border-radius:999px;
- background:linear-gradient(145deg,#0A84FF,#3AA0FF);
- color:white;
- font-weight:600;
- box-shadow:0 10px 25px rgba(10,132,255,0.35);
- transition:all .25s cubic-bezier(.22,1,.36,1);
- text-decoration:none;
-}
-.donation-btn:hover{
- transform:translateY(-2px) scale(1.03);
- box-shadow:0 14px 30px rgba(10,132,255,0.45);
-}
-.donation-btn:active{
- transform:scale(.97);
-}
-.donation-btn::after{
- content:"";
- position:absolute;
- inset:0;
- border-radius:999px;
- background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 60%);
- opacity:0;
- transition:opacity .3s ease;
-}
-.donation-btn:hover::after{
- opacity:1;
-}
-.donation-pulse{
- animation:donationPulse 2.8s infinite;
-}
-@keyframes donationPulse{
- 0%{box-shadow:0 0 0 0 rgba(10,132,255,0.4);}
- 70%{box-shadow:0 0 0 12px rgba(10,132,255,0);}
- 100%{box-shadow:0 0 0 0 rgba(10,132,255,0);}
-}
-</style>
-
 </head>
 <body>
 <div class="di-hidden" id="dynamicIsland"><span id="diText">Acción completada</span><div class="bar" id="diBar"></div></div>
@@ -2691,13 +2641,6 @@ setTimeout(animateCounters, 900);
  }
 })();
 </script>
-
-<div class="donation-floating">
- <a href="https://revolut.me/benyxes" target="_blank" class="donation-btn donation-pulse">
-  ☕ Invítame a un café — 1€
- </a>
-</div>
-
 </body>
 </html>
 <style>
