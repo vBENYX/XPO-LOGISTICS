@@ -739,20 +739,12 @@ function generatePDF_ORIGINAL(){
   const {jsPDF}=window.jspdf; const doc=new jsPDF();
   const TEXT=[29,29,31], MUTED=[110,110,115], LINE=[230,230,234], PANEL=[255,255,255], SOFT=[245,245,247];
   const HAIR=[229,229,234];
-  // Orden por criticidad: AVERIADAS primero, luego CARGADAS, luego VACIAS
-  const sorted = [...data].sort((a,b)=>{
-    const order={AVERIADA:0, CARGADA:1, 'VACÍA':2};
-    if(order[a.estado]!==order[b.estado]) return order[a.estado]-order[b.estado];
-    return a.matricula.localeCompare(b.matricula);
-  });
-  const cargadas=sorted.filter(p=>p.estado==='CARGADA');
-  const vacias=sorted.filter(p=>p.estado==='VACÍA');
-  const averiadas=sorted.filter(p=>p.estado==='AVERIADA');
+  const cargadas=data.filter(p=>p.estado==='CARGADA'), vacias=data.filter(p=>p.estado==='VACÍA'), averiadas=data.filter(p=>p.estado==='AVERIADA');
   const registrador=($('operarioInput').value||localStorage.getItem(OP_KEY)||'OPERARIO').trim()||'OPERARIO';
 
-  const PAGE_BOTTOM = 270;
+  const PAGE_BOTTOM = 272; // límite antes del footer (footer en 283)
   const PAGE_TOP_CONT = 14;
-  const ROW_H = 9; // más alto para matrícula grande
+  const ROW_H = 7;
 
   function drawFirstPageHeader(){
     doc.setFillColor(...PANEL); doc.roundedRect(10,8,190,36,5,5,'F');
@@ -771,20 +763,13 @@ function generatePDF_ORIGINAL(){
     doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(150,150,155); doc.text(fechaFinal,105,28,{align:'center'});
   }
 
-  function drawContinuationHeader(sectionInfo){
-    // sectionInfo = {title, from, to, total}
-    doc.setFillColor(251,251,253); doc.rect(0,0,210,13,'F');
-    doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.line(15,12.5,195,12.5);
-    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...TEXT);
-    let leftText = 'XPO LOGISTICS';
-    if(sectionInfo && sectionInfo.title){
-      leftText += '  ·  ' + sectionInfo.title.toUpperCase() + ' ' + sectionInfo.from + '-' + sectionInfo.to + ' de ' + sectionInfo.total;
-    } else {
-      leftText += '  ·  Continuación';
-    }
-    doc.text(leftText,15,8.5);
-    doc.setFont('helvetica','normal'); doc.setFontSize(6.8); doc.setTextColor(...MUTED);
-    doc.text(registrador.toUpperCase() + ' · ' + new Date().toLocaleDateString('es-ES'),195,8.5,{align:'right'});
+  function drawContinuationHeader(){
+    // Cabecera mínima en páginas de continuación — evita conflicto visual
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.line(15,11,195,11);
+    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...MUTED);
+    doc.text('XPO LOGISTICS',15,9);
+    doc.setFont('helvetica','normal'); doc.text('· Continuación — '+registrador.toUpperCase(), 15+doc.getTextWidth('XPO LOGISTICS')+2, 9);
+    doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.text('© 2026 XPO',195,9,{align:'right'});
   }
 
   function drawBadgeApple(x,y,w,h,style,label,num){
@@ -804,220 +789,231 @@ function generatePDF_ORIGINAL(){
   const STYLE_VACIA={bg:[234,246,238], border:[209,234,217], dot:[29,171,69], text:[29,29,31]};
   const STYLE_AVERIADA={bg:[255,242,230], border:[255,216,181], dot:[255,122,0], text:[29,29,31]};
 
-  function drawSectionHeaderApple(x,y,title,count,style,columnWidth, isCritical=false){
-    doc.setFont('helvetica','bold'); doc.setFontSize(isCritical?10.5:9); doc.setTextColor(...TEXT);
-    let upperTitle=title.toUpperCase();
-    if(isCritical) upperTitle='⚠  '+upperTitle;
+  function drawSectionHeaderApple(x,y,title,count,style,columnWidth){
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...TEXT);
+    const upperTitle=title.toUpperCase();
     doc.text(upperTitle, x, y);
     const numStr=String(count);
-    const pillW=Math.max(13, doc.getTextWidth(numStr)+11);
-    const pillH=7;
+    const pillW=Math.max(11, doc.getTextWidth(numStr)+9);
+    const pillH=6;
     const pillX=x+columnWidth-pillW;
-    const pillY=y-5;
+    const pillY=y-4.5;
     doc.setFillColor(...style.bg);
     doc.setDrawColor(...style.border);
     doc.setLineWidth(0.32);
     doc.roundedRect(pillX, pillY, pillW, pillH, pillH/2, pillH/2, 'FD');
-    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...style.dot);
-    doc.text(numStr, pillX+pillW/2, pillY+pillH/2+1.1, {align:'center'});
+    doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...style.dot);
+    doc.text(numStr, pillX+pillW/2, pillY+pillH/2+1, {align:'center'});
   }
 
-  function ensureSpaceForSection(currentY, neededMin){
-    // Control huérfanos: si no caben al menos título+header+2 filas, salta página
-    if(currentY + neededMin > PAGE_BOTTOM){
-      doc.addPage();
-      drawContinuationHeader(null);
-      return PAGE_TOP_CONT + 6;
+  function drawColumnHeader(leftX, y, columnWidth, withContenido){
+    doc.setFillColor(...SOFT);
+    doc.roundedRect(leftX, y-4, columnWidth, 7.5, 2,2,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(6.8); doc.setTextColor(...MUTED);
+    doc.text('MATRÍCULA', leftX+5, y);
+    if(withContenido){
+      doc.text('CONTENIDO', leftX+30, y);
+    } else {
+      doc.text('CONTENIDO', leftX+30, y);
     }
-    return currentY;
   }
 
-  // === TABLA FULL WIDTH PARA CARGADAS Y AVERIADAS ===
-  function createFullWidthTable(title,data,startY,style,isAveriada){
+  function closeTwoColumnBorders(leftX, rightX, columnWidth, topY, bottomY, hasLeft, hasRight){
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.35);
+    if(hasLeft && bottomY>topY){
+      doc.roundedRect(leftX, topY-4, columnWidth, bottomY-topY+4, 2.8,2.8,'D');
+    }
+    if(hasRight && bottomY>topY){
+      doc.roundedRect(rightX, topY-4, columnWidth, bottomY-topY+4, 2.8,2.8,'D');
+    }
+  }
+
+  // === TABLA DOBLE CON PAGINACIÓN CORREGIDA ===
+  function createTwoColumnTablesApple(leftTitle,leftData,rightTitle,rightData,startY,leftStyle,rightStyle){
+    let currentY=startY;
+    const leftX=15, rightX=110, columnWidth=85;
+    const hasLeft = leftData.length>0;
+    const hasRight = rightData.length>0;
+
+    // Títulos de sección (solo primera página del bloque)
+    if(hasLeft) drawSectionHeaderApple(leftX, currentY, leftTitle, leftData.length, leftStyle, columnWidth);
+    if(hasRight) drawSectionHeaderApple(rightX, currentY, rightTitle, rightData.length, rightStyle, columnWidth);
+    currentY+=5.5;
+
+    let segmentTop = currentY; // inicio del segmento actual en esta página
+    let segmentBottom = currentY;
+
+    function drawHeadersForSegment(){
+      if(hasLeft){
+        drawColumnHeader(leftX, currentY, columnWidth, true);
+      }
+      if(hasRight){
+        // vacías no lleva contenido pero mantenemos estructura
+        doc.setFillColor(...SOFT);
+        doc.roundedRect(rightX, currentY-4, columnWidth, 7.5, 2,2,'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(6.8); doc.setTextColor(...MUTED);
+        doc.text('MATRÍCULA', rightX+5, currentY);
+      }
+      currentY+=7;
+      segmentBottom = currentY;
+    }
+
+    drawHeadersForSegment();
+
+    const maxRows=Math.max(leftData.length,rightData.length);
+
+    for(let i=0;i<maxRows;i++){
+      // calcular altura necesaria para esta fila
+      let extra = 0;
+      if(i<leftData.length && leftData[i].contenido){
+        const lines=doc.splitTextToSize(leftData[i].contenido.toUpperCase(), 50);
+        if(lines.length>1) extra = Math.max(extra, (lines.length-1)*3.2);
+      }
+      if(i<rightData.length && rightData[i].contenido){
+        const lines=doc.splitTextToSize(rightData[i].contenido.toUpperCase(), 50);
+        if(lines.length>1) extra = Math.max(extra, (lines.length-1)*3.2);
+      }
+      const needed = ROW_H + extra;
+
+      // ¿cabe?
+      if(currentY + needed > PAGE_BOTTOM){
+        // cerrar segmento actual
+        closeTwoColumnBorders(leftX, rightX, columnWidth, segmentTop, segmentBottom, hasLeft, hasRight);
+        // nueva página
+        doc.addPage();
+        drawContinuationHeader();
+        currentY = PAGE_TOP_CONT + 4;
+        segmentTop = currentY;
+        drawHeadersForSegment();
+        // re-evaluar misma fila sin incrementar i (no hacemos i--, simplemente continuamos con dibujo abajo)
+      }
+
+      // dibujar fila
+      if(i<leftData.length){
+        const isEven=i%2===0;
+        if(isEven){ doc.setFillColor(251,251,253); doc.rect(leftX, currentY-3.8, columnWidth, needed, 'F'); }
+        doc.setDrawColor(...HAIR); doc.setLineWidth(0.18); doc.line(leftX+2, currentY+needed-4.2, leftX+columnWidth-2, currentY+needed-4.2);
+        doc.setFont('helvetica','bold'); doc.setFontSize(8.2); doc.setTextColor(...TEXT);
+        doc.text(leftData[i].matricula.toUpperCase(), leftX+5, currentY+0.2);
+        if(leftData[i].contenido){
+          doc.setFont('helvetica','normal'); doc.setFontSize(7.4); doc.setTextColor(80,80,85);
+          const lines=doc.splitTextToSize(leftData[i].contenido.toUpperCase(), 50);
+          doc.text(lines, leftX+30, currentY+0.2);
+        }
+      }
+      if(i<rightData.length){
+        const isEven=i%2===0;
+        if(isEven){ doc.setFillColor(251,251,253); doc.rect(rightX, currentY-3.8, columnWidth, needed, 'F'); }
+        doc.setDrawColor(...HAIR); doc.setLineWidth(0.18); doc.line(rightX+2, currentY+needed-4.2, rightX+columnWidth-2, currentY+needed-4.2);
+        doc.setFont('helvetica','bold'); doc.setFontSize(8.2); doc.setTextColor(...TEXT);
+        doc.text(rightData[i].matricula.toUpperCase(), rightX+5, currentY+0.2);
+        if(rightData[i].contenido){
+          doc.setFont('helvetica','normal'); doc.setFontSize(7.4); doc.setTextColor(80,80,85);
+          const lines=doc.splitTextToSize(rightData[i].contenido.toUpperCase(), 50);
+          doc.text(lines, rightX+30, currentY+0.2);
+        }
+      }
+      currentY+=needed;
+      segmentBottom = currentY;
+    }
+
+    // cerrar último segmento
+    closeTwoColumnBorders(leftX, rightX, columnWidth, segmentTop, segmentBottom, hasLeft, hasRight);
+    return currentY+9;
+  }
+
+  function createSingleTableApple(title,data,startY,style){
     let currentY=startY;
     if(data.length===0) return currentY;
-    const totalWidth=180;
+    const columnWidth=180;
     const leftX=15;
-    // Widow control: necesita 26mm mínimo
-    currentY = ensureSpaceForSection(currentY, 26);
 
-    drawSectionHeaderApple(leftX, currentY, title, data.length, style, totalWidth, isAveriada);
-    currentY+=6.5;
+    drawSectionHeaderApple(leftX, currentY, title, data.length, style, columnWidth);
+    currentY+=5.5;
+
     let segmentTop = currentY;
     let segmentBottom = currentY;
-    let segmentStartIdx = 0;
 
-    function drawTableHeader(y){
+    function drawSingleHeader(){
       doc.setFillColor(...SOFT);
-      doc.roundedRect(leftX, y-4.5, totalWidth, 8.5, 2.5,2.5,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...MUTED);
-      doc.text('#', leftX+3, y);
-      doc.text('MATRÍCULA', leftX+12, y);
-      doc.text('HORA', leftX+54, y);
-      doc.text(isAveriada?'AVERÍA / DESCRIPCIÓN':'CONTENIDO', leftX+76, y);
+      doc.roundedRect(15, currentY-4, 180, 7.5, 2,2,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.8); doc.setTextColor(...MUTED);
+      doc.text('MATRÍCULA', 20, currentY);
+      doc.text('DESCRIPCIÓN', 62, currentY);
+      currentY+=7;
+      segmentBottom=currentY;
     }
 
-    drawTableHeader(currentY);
-    currentY+=8;
-    segmentBottom=currentY;
+    drawSingleHeader();
 
-    for(let idx=0; idx<data.length; idx++){
-      const platform=data[idx];
-      let lines=[];
+    for(let index=0; index<data.length; index++){
+      const platform=data[index];
       let extra=0;
       if(platform.contenido){
-        lines=doc.splitTextToSize(platform.contenido.toUpperCase(), 104);
-        if(lines.length>1) extra=(lines.length-1)*4.2;
+        const lines=doc.splitTextToSize(platform.contenido.toUpperCase(), 122);
+        if(lines.length>1) extra=(lines.length-1)*3.2;
       }
       const needed = ROW_H + extra;
 
       if(currentY + needed > PAGE_BOTTOM){
         // cerrar segmento
-        doc.setDrawColor(...LINE); doc.setLineWidth(0.38);
-        if(isAveriada){
-          doc.setFillColor(...style.dot); doc.rect(leftX, segmentTop-4.5, 1.8, segmentBottom-segmentTop+4.5, 'F');
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.35);
+        if(segmentBottom>segmentTop){
+          doc.roundedRect(15, segmentTop-4, 180, segmentBottom-segmentTop+4, 2.8,2.8,'D');
         }
-        doc.roundedRect(leftX, segmentTop-4.5, totalWidth, segmentBottom-segmentTop+4.5, 3,3,'D');
-        // nueva página
         doc.addPage();
-        drawContinuationHeader({title:title, from:segmentStartIdx+1, to:idx, total:data.length});
-        currentY = PAGE_TOP_CONT + 8;
+        drawContinuationHeader();
+        currentY = PAGE_TOP_CONT + 4;
         segmentTop = currentY;
-        segmentStartIdx = idx;
-        drawTableHeader(currentY);
-        currentY+=8;
-        segmentBottom=currentY;
+        // en continuación, mostrar título pequeño
+        doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...TEXT);
+        doc.text((title+' — Continuación').toUpperCase(), 15, currentY);
+        currentY+=4.5;
+        segmentTop = currentY;
+        drawSingleHeader();
       }
 
-      const isEven = idx%2===0;
-      if(isEven){ doc.setFillColor(251,251,253); doc.rect(leftX, currentY-4.5, totalWidth, needed, 'F'); }
-      // línea separadora
-      doc.setDrawColor(...HAIR); doc.setLineWidth(0.18); doc.line(leftX+2, currentY+needed-1.5, leftX+totalWidth-2, currentY+needed-1.5);
-      
-      // #
-      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(140,140,145);
-      doc.text(String(idx+1), leftX+3, currentY+1.2);
-      // MATRICULA - grande mono
-      doc.setFont('courier','bold'); doc.setFontSize(11); doc.setTextColor(...TEXT);
-      doc.text(platform.matricula.toUpperCase(), leftX+12, currentY+1.5);
-      // HORA
-      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(100,100,105);
-      doc.text(platform.timestamp||'', leftX+54, currentY+1.2);
-      // CONTENIDO
+      const isEven=index%2===0;
+      if(isEven){ doc.setFillColor(251,251,253); doc.rect(15, currentY-3.8, 180, needed, 'F'); }
+      doc.setDrawColor(...HAIR); doc.setLineWidth(0.18); doc.line(17, currentY+needed-4.2, 193, currentY+needed-4.2);
+      doc.setFont('helvetica','bold'); doc.setFontSize(8.2); doc.setTextColor(...TEXT);
+      doc.text(platform.matricula.toUpperCase(), 20, currentY+0.2);
       if(platform.contenido){
-        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(55,55,60);
-        doc.text(lines, leftX+76, currentY+1.2);
-      } else {
-        doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(160,160,165);
-        doc.text('—', leftX+76, currentY+1.2);
+        doc.setFont('helvetica','normal'); doc.setFontSize(7.4); doc.setTextColor(80,80,85);
+        const lines=doc.splitTextToSize(platform.contenido.toUpperCase(), 122);
+        doc.text(lines,62,currentY+0.2);
       }
-
       currentY+=needed;
       segmentBottom=currentY;
     }
 
-    // cerrar último
-    doc.setDrawColor(...LINE); doc.setLineWidth(0.38);
-    if(isAveriada){
-      doc.setFillColor(...style.dot); doc.rect(leftX, segmentTop-4.5, 1.8, segmentBottom-segmentTop+4.5, 'F');
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.35);
+    if(segmentBottom>segmentTop){
+      doc.roundedRect(15, segmentTop-4, 180, segmentBottom-segmentTop+4, 2.8,2.8,'D');
     }
-    doc.roundedRect(leftX, segmentTop-4.5, totalWidth, segmentBottom-segmentTop+4.5, 3,3,'D');
-    return currentY+10;
+    return currentY+9;
   }
 
-  // === VACIAS EN GRID 3 COLUMNAS ===
-  function createVaciasGrid(title,data,startY,style){
-    let currentY=startY;
-    if(data.length===0) return currentY;
-    const totalWidth=180;
-    const leftX=15;
-    const gap=5;
-    const colW=(totalWidth - gap*2)/3;
-
-    currentY = ensureSpaceForSection(currentY, 26);
-    drawSectionHeaderApple(leftX, currentY, title, data.length, style, totalWidth, false);
-    currentY+=6.5;
-    let segmentTop=currentY;
-    let segmentBottom=currentY;
-    let segmentStartIdx=0;
-
-    function drawGridHeader(y){
-      doc.setFillColor(...SOFT);
-      doc.roundedRect(leftX, y-4.5, totalWidth, 8.5, 2.5,2.5,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...MUTED);
-      doc.text('MATRÍCULA', leftX+5, y);
-      doc.text('MATRÍCULA', leftX+colW+gap+5, y);
-      doc.text('MATRÍCULA', leftX+(colW+gap)*2+5, y);
-    }
-
-    drawGridHeader(currentY);
-    currentY+=8;
-    segmentBottom=currentY;
-
-    for(let i=0;i<data.length;i+=3){
-      const needed=ROW_H;
-      if(currentY + needed > PAGE_BOTTOM){
-        doc.setDrawColor(...LINE); doc.setLineWidth(0.38);
-        doc.roundedRect(leftX, segmentTop-4.5, totalWidth, segmentBottom-segmentTop+4.5, 3,3,'D');
-        doc.addPage();
-        drawContinuationHeader({title:title, from:segmentStartIdx+1, to:i, total:data.length});
-        currentY = PAGE_TOP_CONT + 8;
-        segmentTop=currentY;
-        segmentStartIdx=i;
-        drawGridHeader(currentY);
-        currentY+=8;
-        segmentBottom=currentY;
-      }
-
-      const rowIdx=Math.floor(i/3);
-      const isEven=rowIdx%2===0;
-      if(isEven){ doc.setFillColor(251,251,253); doc.rect(leftX, currentY-4.5, totalWidth, needed, 'F'); }
-
-      for(let j=0;j<3;j++){
-        const dataIdx=i+j;
-        if(dataIdx>=data.length) break;
-        const x = leftX + j*(colW+gap);
-        // separador vertical sutil
-        if(j>0){
-          doc.setDrawColor(...HAIR); doc.setLineWidth(0.18);
-          doc.line(x-2.5, currentY-4, x-2.5, currentY+needed-2);
-        }
-        doc.setFont('courier','bold'); doc.setFontSize(11); doc.setTextColor(...TEXT);
-        doc.text(data[dataIdx].matricula.toUpperCase(), x+5, currentY+1.2);
-        doc.setFont('helvetica','normal'); doc.setFontSize(6.8); doc.setTextColor(130,130,135);
-        doc.text(data[dataIdx].timestamp||'', x+5, currentY+5.2);
-      }
-
-      doc.setDrawColor(...HAIR); doc.setLineWidth(0.18); doc.line(leftX+2, currentY+needed-1.5, leftX+totalWidth-2, currentY+needed-1.5);
-      currentY+=needed;
-      segmentBottom=currentY;
-    }
-
-    doc.setDrawColor(...LINE); doc.setLineWidth(0.38);
-    doc.roundedRect(leftX, segmentTop-4.5, totalWidth, segmentBottom-segmentTop+4.5, 3,3,'D');
-    return currentY+10;
-  }
-
-  // === DIBUJAR ===
+  // === DIBUJAR PRIMERA PÁGINA ===
   drawFirstPageHeader();
   let yPosition=52;
 
   const usable=180, gap=7, w=(usable-gap*2)/3, h=9.5, y=32; let x=15;
-  drawBadgeApple(x,y,w,h,STYLE_AVERIADA,'Averiadas',averiadas.length); x+=w+gap;
   drawBadgeApple(x,y,w,h,STYLE_CARGADA,'Cargadas',cargadas.length); x+=w+gap;
-  drawBadgeApple(x,y,w,h,STYLE_VACIA,'Vacías',vacias.length);
+  drawBadgeApple(x,y,w,h,STYLE_VACIA,'Vacías',vacias.length); x+=w+gap;
+  drawBadgeApple(x,y,w,h,STYLE_AVERIADA,'Averiadas',averiadas.length);
 
-  // 1. AVERIADAS primero (crítico)
+  if(cargadas.length>0||vacias.length>0){
+    yPosition=createTwoColumnTablesApple('Plataformas Cargadas',cargadas,'Plataformas Vacías',vacias,yPosition,STYLE_CARGADA,STYLE_VACIA);
+  }
   if(averiadas.length>0){
-    yPosition=createFullWidthTable('Plataformas Averiadas — ATENCIÓN',averiadas,yPosition,STYLE_AVERIADA,true);
-  }
-  // 2. CARGADAS
-  if(cargadas.length>0){
-    yPosition=createFullWidthTable('Plataformas Cargadas',cargadas,yPosition,STYLE_CARGADA,false);
-  }
-  // 3. VACIAS al final en grid compacto
-  if(vacias.length>0){
-    yPosition=createVaciasGrid('Plataformas Vacías',vacias,yPosition,STYLE_VACIA);
+    // si no cabe el título, forzar nueva página antes
+    if(yPosition + 20 > PAGE_BOTTOM){
+      doc.addPage();
+      drawContinuationHeader();
+      yPosition = PAGE_TOP_CONT + 4;
+    }
+    yPosition=createSingleTableApple('Plataformas Averiadas',averiadas,yPosition,STYLE_AVERIADA);
   }
 
   const pageCount=doc.internal.getNumberOfPages();
@@ -1031,9 +1027,9 @@ function generatePDF_ORIGINAL(){
     doc.text('Página '+i+' de '+pageCount,190,287,{align:'right'});
     doc.setDrawColor(...LINE); doc.setLineWidth(0.25); doc.line(15,283,195,283);
   }
-  const exportDateForName=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'-') + '_' + new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}).replace(/:/g,'');
-  doc.save('XPO_'+exportDateForName+'_'+registrador.replace(/\s+/g,'_')+'.pdf');
-  toast('PDF v2 generado ✓ — Averiadas primero','success');
+  const exportDateForName=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'-');
+  doc.save('reporte_plataformas_'+exportDateForName+'.pdf');
+  toast('PDF Apple generado ✓','success');
 }
 
 
